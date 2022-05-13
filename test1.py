@@ -658,8 +658,8 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
     await MyBot.bot.send_message(c.from_user.id,
                                  'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\n'
                                  'Желаю тебе достичь всех амбициозных целей! Удачи тебе!\n'
-                                 f'Время начала теста: {manager.current_context().dialog_data["start_time"]}\n'
-                                 f'Время окончания теста: {manager.current_context().dialog_data["end_time"]}\n'
+                                 f'Время начала теста:\n{manager.current_context().dialog_data["start_time"]}\n'
+                                 f'Время окончания теста:\n{manager.current_context().dialog_data["end_time"]}\n'
                                  'Твои результаты:\n'
                                  f'№1 : {manager.current_context().dialog_data["c1s1"]}\n'
                                  f'№2 : {manager.current_context().dialog_data["c1s2"]}\n'
