@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 
 from aiogram.types import CallbackQuery, ParseMode
@@ -5,7 +6,7 @@ from aiogram.types import CallbackQuery, ParseMode
 from aiogram_dialog import ChatEvent
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button, Select, Back, Column, Cancel, Url, SwitchTo, Row
-from aiogram_dialog.widgets.text import Format
+from aiogram_dialog.widgets.text import Format, Jinja
 
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.types import Message
@@ -15,6 +16,7 @@ from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.kbd import Start
 from aiogram_dialog.widgets.text import Const
 
+from database import Situations
 from bot import MyBot
 
 next_state: State
@@ -64,31 +66,44 @@ async def get_data(dialog_manager: DialogManager, **kwargs):
         'start_time': dialog_manager.current_context().dialog_data.get("start_time", None),
         'end_time': dialog_manager.current_context().dialog_data.get("end_time", None),
         'answer_buffer': dialog_manager.current_context().dialog_data.get("answer_buffer", ""),
+        'answer_variants': dialog_manager.current_context().dialog_data.get("answer_variants", ""),
     }
-
-
-async def start_test(c: CallbackQuery, button: Button, manager: DialogManager):
-    manager.current_context().dialog_data["start_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
-    await manager.dialog().switch_to(test1SG.c1s1)
 
 
 async def next_question(c: CallbackQuery, button: Button, manager: DialogManager):
     await manager.dialog().switch_to(next_state)
 
 
+async def get_random_answers(manager: DialogManager, situation: int):
+    answer_stuff = await Situations.filter(situation=situation).values_list("text", "answer", "score")
+    random.shuffle(answer_stuff)
+    manager.current_context().dialog_data["answer_stuff"] = {
+        "1": [answer_stuff[0][0], answer_stuff[0][1], answer_stuff[0][2]],
+        "2": [answer_stuff[1][0], answer_stuff[1][1], answer_stuff[1][2]],
+        "3": [answer_stuff[2][0], answer_stuff[2][1], answer_stuff[2][2]],
+        "4": [answer_stuff[3][0], answer_stuff[3][1], answer_stuff[3][2]]
+    }
+
+    answer_variants = []
+    for key in manager.current_context().dialog_data["answer_stuff"]:
+        answer_variants.append(f'{key}. {manager.current_context().dialog_data["answer_stuff"][key][0]}')
+
+    manager.current_context().dialog_data["answer_variants"] = answer_variants
+
+
+async def start_test(c: CallbackQuery, button: Button, manager: DialogManager):
+    manager.current_context().dialog_data["start_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
+
+    await get_random_answers(manager, 1)
+    await manager.dialog().switch_to(test1SG.c1s1)
+
+
 async def c1s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["answer_buffer"] = "Выбранная тобой задача оказалась воспитательной. Образовательной же задачей будет «Обучение ведению и броску гандбольного мяча»."
-        manager.current_context().dialog_data["c1s1"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["answer_buffer"] = "Выбранная тобой задача оказалась оздоровительной. Образовательной же задачей будет «Обучение ведению и броску гандбольного мяча»."
-        manager.current_context().dialog_data["c1s1"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["answer_buffer"] = "Да, это образовательная задача, но она не соответствует третьему занятию по календарному планированию, совершенствовать ещё рано. Лучше подойдёт «Обучение ведению и броску гандбольного мяча»."
-        manager.current_context().dialog_data["c1s1"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["answer_buffer"] = "Молодец! Эта задача нам подходит!"
-        manager.current_context().dialog_data["c1s1"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c1s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 2)
 
     global next_state
     next_state = test1SG.c1s2
@@ -96,18 +111,11 @@ async def c1s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c1s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["answer_buffer"] = "Хм...Пока рано давать эти упражнения. Они больше подойдут для решения задач по совершенствованию техники ведения и броска мяча. На этом занятии лучше всего дать упражнения на ведение мяча на месте и бросок мяча в стену с места."
-        manager.current_context().dialog_data["c1s2"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["answer_buffer"] = "Хм...Пока рано давать эти упражнения. Они больше подойдут для решения задач по совершенствованию техники ведения и броска мяча. На этом занятии лучше всего дать упражнения на ведение мяча на месте и бросок мяча в стену с места."
-        manager.current_context().dialog_data["c1s2"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["answer_buffer"] = "Хм...Пока рано давать эти упражнения. Они больше подойдут для решения задач по совершенствованию техники ведения и броска мяча. На этом занятии лучше всего дать упражнения на ведение мяча на месте и бросок мяча в стену с места."
-        manager.current_context().dialog_data["c1s2"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["answer_buffer"] = "Отлично! Эти упражнения хорошо подходят для решения образовательной задачи."
-        manager.current_context().dialog_data["c1s2"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c1s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 3)
 
     global next_state
     next_state = test1SG.c5s4
@@ -115,18 +123,11 @@ async def c1s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c5s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["answer_buffer"] = "Ты выбрал электронное методическое пособие, в котором разобрана техника броска гандбольного мяча."
-        manager.current_context().dialog_data["c5s4"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["answer_buffer"] = "Ты выбрал художественный фильм, в котором показана техника броска гандбольного мяча."
-        manager.current_context().dialog_data["c5s4"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["answer_buffer"] = "Ты выбрал приложение «Гандбол 2022», в котором демонстрируется техника броска гандбольного мяча."
-        manager.current_context().dialog_data["c5s4"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["answer_buffer"] = "Ты выбрал видео с официального канала МЭШ на YouTube, в котором разобрана техника броска гандбольного мяча."
-        manager.current_context().dialog_data["c5s4"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 4)
 
     global next_state
     next_state = test1SG.c5s2
@@ -134,31 +135,23 @@ async def c5s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c5s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c5s2"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c5s2"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c5s2"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c5s2"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 5)
 
     global next_state
     next_state = test1SG.c5s1
-    await manager.dialog().switch_to(test1SG.answer)
+    await manager.dialog().switch_to(next_state)
 
 
 async def c5s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c5s1"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c5s1"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c5s1"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c5s1"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Отлично! С домашним заданием и дополнительными материалами определились. Возвращаемся к плану-конспекту занятия."
+    await get_random_answers(manager, 6)
 
     global next_state
     next_state = test1SG.c4s4
@@ -166,16 +159,11 @@ async def c5s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c4s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c4s4"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c4s4"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c4s4"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c4s4"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Хм..Хорошо!"
+    await get_random_answers(manager, 7)
 
     global next_state
     next_state = test1SG.c6s2
@@ -183,16 +171,11 @@ async def c4s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c6s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c6s2"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c6s2"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c6s2"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c6s2"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Отлично! С планом-конспектом разобрались, можно приступать к занятию."
+    await get_random_answers(manager, 8)
 
     global next_state
     next_state = test1SG.c7s2
@@ -200,18 +183,11 @@ async def c6s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c7s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["answer_buffer"] = "Что ж... Решение твоё. Ты поступил, как считаешь нужным. Посмотрим, будут ли какие-то последствия в дальнейшем."
-        manager.current_context().dialog_data["c7s2"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["answer_buffer"] = "Что ж... Решение твоё. Ты поступил, как считаешь нужным. Посмотрим, будут ли какие-то последствия в дальнейшем."
-        manager.current_context().dialog_data["c7s2"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["answer_buffer"] = "Что ж... Решение твоё. Ты поступил, как считаешь нужным. Посмотрим, будут ли какие-то последствия в дальнейшем."
-        manager.current_context().dialog_data["c7s2"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["answer_buffer"] = "Интересное решение! Посмотрим, приведёт ли оно тебя к чему-то в дальнейшем."
-        manager.current_context().dialog_data["c7s2"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 9)
 
     global next_state
     next_state = test1SG.c7s3
@@ -219,18 +195,11 @@ async def c7s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c7s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["answer_buffer"] = "Грубовато...\nНо как знаешь. Пора приступать к бегу."
-        manager.current_context().dialog_data["c7s3"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["answer_buffer"] = "Жёстко. Про “играть не умеют” поспорил бы, но зато побежали. Тогда переходим к бегу."
-        manager.current_context().dialog_data["c7s3"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["answer_buffer"] = "Хорошо. Поддеражали интерес к игре и к себе, только времени много на это ушло. Пора переходить к бегу."
-        manager.current_context().dialog_data["c7s3"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["answer_buffer"] = "Отлично! И время сэкономили, и интерес к игре поддержали. Переходим к бегу."
-        manager.current_context().dialog_data["c7s3"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 10)
 
     global next_state
     next_state = test1SG.c1s5
@@ -238,33 +207,23 @@ async def c7s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c1s5_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c1s5"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c1s5"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c1s5"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c1s5"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 11)
 
     global next_state
     next_state = test1SG.c1s3
-    await manager.dialog().switch_to(test1SG.answer)
+    await manager.dialog().switch_to(next_state)
 
 
 async def c1s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c1s3"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Хм...Странный выбор...Эти признаки говорят о том, что у Гали повышенная утомляемость. Лучше обратить на это внимание и дать Гале команду перейти на шаг и отправиться в конец колонны."
-    if item_id == "2":
-        manager.current_context().dialog_data["c1s3"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Перечисленные признаки говорят о том, что у Гали повышенная утомляемость. После бега необходимо плавно снижать нагрузку, поэтому нельзя сразу сажать Галю на скамью, а лучше перевести её на шаг и отправить в конец колонны."
-    if item_id == "3":
-        manager.current_context().dialog_data["c1s3"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Да, можно действовать и так, если ты хорошо знаешь особенности Гали. Но так как это всего лишь третье занятие, индивидуальные особенности всех занимающихся выделить практически невозможно. Поэтому лучше всего в данной ситуации перевести Галю на шаг и отправить в конец колонны."
-    if item_id == "4":
-        manager.current_context().dialog_data["c1s3"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Хорошо! Перечисленные признаки говорят о том, что у Гали повышенная утомляемость, поэтому это наиболее подходящий выход из данной ситуации."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 12)
 
     global next_state
     next_state = test1SG.c3s1
@@ -272,48 +231,23 @@ async def c1s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c3s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 13)
+
     global next_state
-
-    if item_id == "1":
-        manager.current_context().dialog_data["c3s1"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Хм...Проба Ромберга...Интересный выбор!"
-
-        next_state = test1SG.c3s2_1
-        await manager.dialog().switch_to(test1SG.answer)
-
-    if item_id == "2":
-        manager.current_context().dialog_data["c3s1"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Этот метод можно использовать, но в данный момент он не является эффективным, так как дети не всегда могут объективно оценить уровень полученной нагрузки. Наиболее объективным методом из предложенных является пульсометрия. Давай проведём её."
-
-        next_state = test1SG.c3s2_2
-        await manager.dialog().switch_to(test1SG.answer)
-
-    if item_id == "3":
-        manager.current_context().dialog_data["c3s1"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Этот метод можно использовать, но мы не всегда можем объективно оценить уровень полученной нагрузки по внешнему виду обучающегося, есть риск не заметить признаки утомления у одного или нескольких учеников. Наиболее объективным методом из предложенных является пульсометрия. Давай проведём её."
-
-        next_state = test1SG.c3s2_2
-        await manager.dialog().switch_to(test1SG.answer)
-
-    if item_id == "4":
-        manager.current_context().dialog_data["c3s1"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Отлично! Пульсометрия действительно эффективный метод!"
-
-        next_state = test1SG.c3s2_2
-        await manager.dialog().switch_to(test1SG.answer)
+    next_state = test1SG.c3s2_2
+    await manager.dialog().switch_to(test1SG.answer)
 
 
 async def c3s2_1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c3s2"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c3s2"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c3s2"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c3s2"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Проведя пробу Ромберга ты решил ещё ???\nТаким образом получили данные, что в среднем у группы значения ЧСС около 120 уд/мин."
+    await get_random_answers(manager, 14)
 
     global next_state
     next_state = test1SG.c3s3
@@ -321,16 +255,11 @@ async def c3s2_1_handler(c: ChatEvent, select: Select, manager: DialogManager, i
 
 
 async def c3s2_2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c3s2"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c3s2"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c3s2"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c3s2"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Таким образом получили данные, что в среднем у группы значения ЧСС около 120 уд/мин."
+    await get_random_answers(manager, 14)
 
     global next_state
     next_state = test1SG.c3s3
@@ -338,16 +267,11 @@ async def c3s2_2_handler(c: ChatEvent, select: Select, manager: DialogManager, i
 
 
 async def c3s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c3s3"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c3s3"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c3s3"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c3s3"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Хорошо. Учтёшь эти выводы при дальнейшем планировании тренировочного процесса, а сейчас возвращаемся к занятию. У нас впереди комплекс ОРУ."
+    await get_random_answers(manager, 15)
 
     global next_state
     next_state = test1SG.c2s1
@@ -355,34 +279,23 @@ async def c3s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c2s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c2s1"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c2s1"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c2s1"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c2s1"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Отлично! Ваня провел свою часть комплекса ОРУ. Все ему поаплодировали. И ты продалажаешь проведение комплекса."
+    await get_random_answers(manager, 16)
+
     global next_state
     next_state = test1SG.c4s3
     await manager.dialog().switch_to(test1SG.answer)
 
 
 async def c4s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c4s3"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Все смогли выполнить, а кто-то даже легко коснулся ладонями и сказал, что это слишком просто."
-    if item_id == "2":
-        manager.current_context().dialog_data["c4s3"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Почти все смогли выполнить, а кто-то даже легко коснулся ладонями и сказал, что это слишком просто."
-    if item_id == "3":
-        manager.current_context().dialog_data["c4s3"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Большинство смогли выполнить, а кто-то даже легко коснулся ладонями и сказал, что это слишком просто."
-    if item_id == "4":
-        manager.current_context().dialog_data["c4s3"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Почти всем далось непросто, а некоторые смогли только пальцами коснуться пола и сказали, что это слишком сложно. Но всем понравилось."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 17)
 
     global next_state
     next_state = test1SG.c4s2
@@ -390,18 +303,11 @@ async def c4s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c4s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c4s2"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Федя и Марина сделали по 4 раза и больше не смогли. Для них это много. Надо их взбодрить."
-    if item_id == "2":
-        manager.current_context().dialog_data["c4s2"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Оля и Дима сделали по 12 раз, остальные в среднем по 8, а Егор только 4 раза. Надо учесть это в подготовке к следующему занятию. А сейчас пора переходить к основной части занятия."
-    if item_id == "3":
-        manager.current_context().dialog_data["c4s2"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Вика и Егор выполнили 7 раз, Марина и Федя по 6 - прогресс “на лицо”. Остальные сделали по 10 раз. А Костя и Максим закончили первыми и долго ждали остальных. Надо учесть это в следующий раз. А сейчас пора переходить к основной части занятия."
-    if item_id == "4":
-        manager.current_context().dialog_data["c4s2"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Все справились с заданем.  Можно переходить к основной части занятия."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 18)
 
     global next_state
     next_state = test1SG.c2s2
@@ -409,16 +315,11 @@ async def c4s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c2s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c2s2"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c2s2"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c2s2"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c2s2"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Хорошо. Теперь точно можно приступать к основной части занятия. Тем более, что далее по плану ведение гандбольного мяча."
+    await get_random_answers(manager, 19)
 
     global next_state
     next_state = test1SG.c6s3
@@ -426,18 +327,11 @@ async def c2s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c6s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c6s3"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Долго, конечно, но зато они уже в одной шеренге. Можно начинать объяснение."
-    if item_id == "2":
-        manager.current_context().dialog_data["c6s3"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Хм... Интересно.\nТеперь их нужно построить в одну шеренгу на расстоянии друг от друга. И начать объяснение"
-    if item_id == "3":
-        manager.current_context().dialog_data["c6s3"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Хорошо!\nТеперь их нужно построить в одну шеренгу на расстоянии друг от друга. И начать объяснение."
-    if item_id == "4":
-        manager.current_context().dialog_data["c6s3"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Ловко!\nТеперь их нужно остановить и построить в одну шеренгу на расстоянии друг от друга. И начать объяснение."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 20)
 
     global next_state
     next_state = test1SG.c4s1
@@ -445,34 +339,23 @@ async def c6s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c4s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c4s1"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c4s1"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c4s1"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c4s1"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Креативный подход. Переходим к броску гандбольного мяча."
+    await get_random_answers(manager, 21)
+
     global next_state
     next_state = test1SG.c6s1
     await manager.dialog().switch_to(test1SG.answer)
 
 
 async def c6s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c6s1"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Маловато инструкций, но тем не менее у занимающихся получилось очень даже неплохо.\nНо тут ..."
-    if item_id == "2":
-        manager.current_context().dialog_data["c6s1"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Маловато инструкций, но тем не менее у занимающихся получилось очень даже неплохо.\nНо тут ..."
-    if item_id == "3":
-        manager.current_context().dialog_data["c6s1"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Очень качественно.\nПочти у всех хорошо получилось выполнить данное упражнение.\nИ тут..."
-    if item_id == "4":
-        manager.current_context().dialog_data["c6s1"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Очень качественно.\nПочти у всех хорошо получилось выполнить данное упражнение.\nИ тут..."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 22)
 
     global next_state
     next_state = test1SG.c2s4
@@ -480,18 +363,11 @@ async def c6s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c2s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c2s4"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Сильно.\nНо хоть за что-то уж точно можно было бы похвалить. Ладно продолжаем. Пора играть в гандбол."
-    if item_id == "2":
-        manager.current_context().dialog_data["c2s4"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Хорошо.\nС Настей вопрос решили. Пора играть в гандбол."
-    if item_id == "3":
-        manager.current_context().dialog_data["c2s4"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Хорошо.\nС Настей вопрос решили. Пора играть в гандбол."
-    if item_id == "4":
-        manager.current_context().dialog_data["c2s4"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Хорошо.\nС Настей вопрос решили. Пора играть в гандбол."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 23)
 
     global next_state
     next_state = test1SG.c2s3
@@ -499,16 +375,11 @@ async def c2s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c2s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c2s3"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c2s3"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c2s3"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c2s3"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Так и договорились.\nНачали играть. У детей появился спортивный азарт, идёт хорошая атака и тут ты замечаешь..."
+    await get_random_answers(manager, 24)
 
     global next_state
     next_state = test1SG.c6s4
@@ -516,30 +387,23 @@ async def c2s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c6s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c6s4"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c6s4"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c6s4"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c6s4"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "На этом занятие подходит к концу. Завершили игру. Построились. Подвели итоги занятия. И попрощались.\nНо это ещё не всё!"
+    await get_random_answers(manager, 25)
+
     global next_state
     next_state = test1SG.c7s4
     await manager.dialog().switch_to(test1SG.answer)
 
 
 async def c7s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c7s4"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c7s4"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c7s4"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c7s4"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 26)
 
     global next_state
     next_state = test1SG.c7s5
@@ -547,18 +411,11 @@ async def c7s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c7s5_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c7s5"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Хм...Уверенная позиция.\nИнтересно насколько долго получится сотрудничать с администрацией и родителями этого образовательного учреждения.  Но беседа закончилась. Надо возвращаться к себе в кабинет."
-    if item_id == "2":
-        manager.current_context().dialog_data["c7s5"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Интересное решение.\nОднако затратное. Может быть и сработает. Но беседа закончилась. Надо возвращаться к себе в кабинет."
-    if item_id == "3":
-        manager.current_context().dialog_data["c7s5"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Хорошо.\nЕсли администрация всё правильно поняла, то может быть получиться убедить маму Саши. А беседа закончилась. Надо возвращаться к себе в кабинет."
-    if item_id == "4":
-        manager.current_context().dialog_data["c7s5"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Отлично!\nВместе с администрацией всё- таки больше шансов убедить маму Саши.  Беседа закончилась. Надо возвращаться к себе в кабинет."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 27)
 
     global next_state
     next_state = test1SG.c5s5
@@ -566,16 +423,11 @@ async def c7s5_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c5s5_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c5s5"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c5s5"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c5s5"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c5s5"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Хорошо.\nТы уже почти пришел в свой кабинет и тут..."
+    await get_random_answers(manager, 28)
 
     global next_state
     next_state = test1SG.c8s3
@@ -583,18 +435,11 @@ async def c5s5_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c8s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c8s3"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Нет.\nВсё-таки требования к температуре в спортивном зале прописаны в СанПиН.\nКстати о занятии..."
-    if item_id == "2":
-        manager.current_context().dialog_data["c8s3"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Нет.\nВсё-таки требования к температуре в спортивном зале прописаны в СанПиН.\nКстати о занятии..."
-    if item_id == "3":
-        manager.current_context().dialog_data["c8s3"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Нет.\nВсё-таки требования к температуре в спортивном зале прописаны в СанПиН.\nКстати о занятии..."
-    if item_id == "4":
-        manager.current_context().dialog_data["c8s3"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Да.\nИменно в этом документе прописаны требования к температуре в спортивном зале.\nКстати о занятии..."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 29)
 
     global next_state
     next_state = test1SG.c8s1
@@ -602,18 +447,11 @@ async def c8s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c8s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c8s1"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "???Нет.\nВсё-таки требования к температуре в спортивном зале прописаны в СанПиН.\nКстати о занятии..."
-    if item_id == "2":
-        manager.current_context().dialog_data["c8s1"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "???Нет.\nВсё-таки требования к температуре в спортивном зале прописаны в СанПиН.\nКстати о занятии..."
-    if item_id == "3":
-        manager.current_context().dialog_data["c8s1"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "???Нет.\nВсё-таки требования к температуре в спортивном зале прописаны в СанПиН.\nКстати о занятии..."
-    if item_id == "4":
-        manager.current_context().dialog_data["c8s1"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "???Да.\nИменно в этом документе прописаны требования к температуре в спортивном зале.\nКстати о занятии..."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 30)
 
     global next_state
     next_state = test1SG.c8s2
@@ -621,18 +459,11 @@ async def c8s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c8s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c8s2"] = 1
-        manager.current_context().dialog_data["answer_buffer"] = "Почти.\nНа самом деле на этапе начальной подготовки не требуется проводить отборочные соревнования."
-    if item_id == "2":
-        manager.current_context().dialog_data["c8s2"] = 2
-        manager.current_context().dialog_data["answer_buffer"] = "Почти.\nНа самом деле на этапе начальной подготовки не требуется проводить отборочные соревнования."
-    if item_id == "3":
-        manager.current_context().dialog_data["c8s2"] = 3
-        manager.current_context().dialog_data["answer_buffer"] = "Почти.\nНа самом деле на этапе начальной подготовки не требуется проводить отборочные соревнования."
-    if item_id == "4":
-        manager.current_context().dialog_data["c8s2"] = 4
-        manager.current_context().dialog_data["answer_buffer"] = "Верно.\nНа этапе начальной подготовки не требуется проводить отборочные соревнования."
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+
+    await get_random_answers(manager, 31)
 
     global next_state
     next_state = test1SG.c3s4
@@ -640,16 +471,11 @@ async def c8s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c3s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c3s4"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c3s4"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c3s4"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c3s4"] = 4
+    manager.current_context().dialog_data["answer_buffer"] = \
+        manager.current_context().dialog_data["answer_stuff"][item_id][1]
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["answer_buffer"] = "Хорошо.\nС домашним заданием определились, занятие провели, выводы сделали. Можно отправляться домой."
+    await get_random_answers(manager, 32)
 
     global next_state
     next_state = test1SG.c8s4
@@ -657,14 +483,7 @@ async def c3s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    if item_id == "1":
-        manager.current_context().dialog_data["c8s4"] = 1
-    if item_id == "2":
-        manager.current_context().dialog_data["c8s4"] = 2
-    if item_id == "3":
-        manager.current_context().dialog_data["c8s4"] = 3
-    if item_id == "4":
-        manager.current_context().dialog_data["c8s4"] = 4
+    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     manager.current_context().dialog_data["end_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
 
@@ -709,6 +528,7 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
                                  )
     await manager.done()
 
+
 test1 = Dialog(
     Window(
         Format("{answer_buffer}"),
@@ -727,15 +547,16 @@ test1 = Dialog(
         state=test1SG.introduction
     ),
     Window(
-        Format("Перед тем как пойдут запланированные 45 минут занятия,"
-               "необходимо составить план- конспект предстоящего занятия."
-               "Начнём с педагогических задач."
-               "Какую из этих задач ты поставишь, как образовательную?\n"
-               "<b>1. Способствовать воспитанию чувства ответственности и работы в команде\n"
-               "2. Способствовать развитию координационных способностей\n"
-               "3. Совершенствование ведения и броска гандбольного мяча\n"
-               "4. Обучение ведению и броску гандбольного мяча</b>"
-               ),
+        Jinja("Перед тем как пойдут запланированные 45 минут занятия,"
+              "необходимо составить план- конспект предстоящего занятия."
+              "Начнём с педагогических задач."
+              "Какую из этих задач ты поставишь, как образовательную?\n"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
+              ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -746,22 +567,18 @@ test1 = Dialog(
             id="c1s1",
             on_click=c1s1_handler,
         )),
+        getter=get_data,
         parse_mode=ParseMode.HTML,
         state=test1SG.c1s1
     ),
     Window(
-        Format("Какие упражнения ты выберешь для выполнения этой задачи в основной части занятия?\n"
-               "<b>"
-               "1. Ведение мяча с закрытыми глазами\n"
-               "   Бросок мяча в прыжке\n\n"
-               "2. Ведение с двумя мячами\n"
-               "   Бросок с обманным движением\n\n"
-               "3. Ведение мяча в беге\n"
-               "   Бросок меча во время движения\n\n"
-               "4. Ведение мяча на месте\n"
-               "   Бросок мяча в стену с места\n\n"
-               "</b>"
-               ),
+        Jinja("Какие упражнения ты выберешь для выполнения этой задачи в основной части занятия?\n"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
+              ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -777,16 +594,15 @@ test1 = Dialog(
         state=test1SG.c1s2
     ),
     Window(
-        Format("Ты изучил цифровые материалы по обучению броска мяча в гандболе"
-               " и решил отправить один из них детям в качестве дополнительного материала.\n"
-               "<b>Какую ссылку отправишь?</b>\n"
-               "<b>"
-               "1. Ссылка на электронное методическое пособие\n"
-               "2. Ссылка на художественный фильм\n"
-               "3. Ссылка на приложение «Гандбол 2022»\n"
-               "4. Ссылка на видео с официального канала МЭШ на YouTube\n"
-               "</b>"
-               ),
+        Jinja("Ты изучил цифровые материалы по обучению броска мяча в гандболе"
+              " и решил отправить один из них детям в качестве дополнительного материала.\n"
+              "<b>Какую ссылку отправишь?</b>\n"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
+              ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -884,14 +700,15 @@ test1 = Dialog(
         state=test1SG.c4s4
     ),
     Window(
-        Format("<b>Тогда в какой форме ты произведёшь сбор данных о том, насколько твои ученики ознакомлены с техникой безопасности на занятии?</b>\n"
-               "<b>"
-               "1. Рассказ непосредственно перед началом игры в гандбол\n"
-               "2. Задание на внимание в конце занятия\n"
-               "3. Беседа в начале урока\n"
-               "4. Игра на внимание в начале урока\n"
-               "</b>"
-               ),
+        Format(
+            "<b>Тогда в какой форме ты произведёшь сбор данных о том, насколько твои ученики ознакомлены с техникой безопасности на занятии?</b>\n"
+            "<b>"
+            "1. Рассказ непосредственно перед началом игры в гандбол\n"
+            "2. Задание на внимание в конце занятия\n"
+            "3. Беседа в начале урока\n"
+            "4. Игра на внимание в начале урока\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -907,15 +724,16 @@ test1 = Dialog(
         state=test1SG.c6s2
     ),
     Window(
-        Format("Итак, на занятие пришло 18 учеников. Все построились в одну шеренгу. Все в спортивной форме. Но тут ты замечаешь, что Петя стоит в грязной уличной обуви."
-               "<b>Что будешь делать?</b>\n"
-               "<b>"
-               "1. Наорёшь на Петю и выгонишь с занятия\n"
-               "2. Спросишь у Пети где «сменка» и заставишь заниматься босиком\n"
-               "3. Отправишь Петю мыть обувь, а потом подключишь его к работе\n"
-               "4. Посадишь Петю на скамью всё занятие наблюдать со стороны\n"
-               "</b>"
-               ),
+        Format(
+            "Итак, на занятие пришло 18 учеников. Все построились в одну шеренгу. Все в спортивной форме. Но тут ты замечаешь, что Петя стоит в грязной уличной обуви."
+            "<b>Что будешь делать?</b>\n"
+            "<b>"
+            "1. Наорёшь на Петю и выгонишь с занятия\n"
+            "2. Спросишь у Пети где «сменка» и заставишь заниматься босиком\n"
+            "3. Отправишь Петю мыть обувь, а потом подключишь его к работе\n"
+            "4. Посадишь Петю на скамью всё занятие наблюдать со стороны\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -931,15 +749,16 @@ test1 = Dialog(
         state=test1SG.c7s2
     ),
     Window(
-        Format("С Петей разобрались. Но пока решали вопрос с Петей, остальные стали обсуждать вчерашний матч сборной нашей страны с принципиальным соперником."
-               "<b>Что скажешь?</b>\n"
-               "<b>"
-               "1. «Тишина! Петя, из-за тебя время тратим, так ещё и остальные болтать начинают! Кого выгнать?»\n"
-               "2. «Нечего там обсуждать! Играть не умеют всё равно! Беспомощные! Бегом по залу! Молча!»\n"
-               "3. Присоединишься к обсуждению. Обсудите игру. Расскажешь истории из своей жизни. Потом продолжишь занятие.\n"
-               "4. Присоединишься к обсуждению. Отметишь, что игра была интересной и предложишь продолжить занятие.\n"
-               "</b>"
-               ),
+        Format(
+            "С Петей разобрались. Но пока решали вопрос с Петей, остальные стали обсуждать вчерашний матч сборной нашей страны с принципиальным соперником."
+            "<b>Что скажешь?</b>\n"
+            "<b>"
+            "1. «Тишина! Петя, из-за тебя время тратим, так ещё и остальные болтать начинают! Кого выгнать?»\n"
+            "2. «Нечего там обсуждать! Играть не умеют всё равно! Беспомощные! Бегом по залу! Молча!»\n"
+            "3. Присоединишься к обсуждению. Обсудите игру. Расскажешь истории из своей жизни. Потом продолжишь занятие.\n"
+            "4. Присоединишься к обсуждению. Отметишь, что игра была интересной и предложишь продолжить занятие.\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -979,15 +798,16 @@ test1 = Dialog(
         state=test1SG.c1s5
     ),
     Window(
-        Format("Бег\nНа последних минутах бега ты замечаешь, что у Гали красные щёки, повышенная потливость, тяжёлое дыхание и нарушенная координация движений.\n"
-               "<b>Что будешь делать?</b>\n"
-               "<b>"
-               "1. Продолжишь без дополнительных команд\n"
-               "2. Посадишь Галю на скамью\n"
-               "3. Скажешь Гале перейти на лёгкий бег\n"
-               "4. Скажешь Гале перейти на шаг и отправиться в конец колонны\n"
-               "</b>"
-               ),
+        Format(
+            "Бег\nНа последних минутах бега ты замечаешь, что у Гали красные щёки, повышенная потливость, тяжёлое дыхание и нарушенная координация движений.\n"
+            "<b>Что будешь делать?</b>\n"
+            "<b>"
+            "1. Продолжишь без дополнительных команд\n"
+            "2. Посадишь Галю на скамью\n"
+            "3. Скажешь Гале перейти на лёгкий бег\n"
+            "4. Скажешь Гале перейти на шаг и отправиться в конец колонны\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1003,15 +823,16 @@ test1 = Dialog(
         state=test1SG.c1s3
     ),
     Window(
-        Format("Диагностика\n Отлично! Беговые упражнения завершили. Теперь нужно оценить уровень полученной нагрузки.\n"
-               "<b>Какой из перечисленных методов диагностики поможет это сделать?</b>\n"
-               "<b>"
-               "1. Проба Ромберга\n"
-               "2. Вопрос: «Устали или нет ещё?»\n"
-               "3. Внешняя оценка степени утомляемости\n"
-               "4. Пульсометрия\n"
-               "</b>"
-               ),
+        Format(
+            "Диагностика\n Отлично! Беговые упражнения завершили. Теперь нужно оценить уровень полученной нагрузки.\n"
+            "<b>Какой из перечисленных методов диагностики поможет это сделать?</b>\n"
+            "<b>"
+            "1. Проба Ромберга\n"
+            "2. Вопрос: «Устали или нет ещё?»\n"
+            "3. Внешняя оценка степени утомляемости\n"
+            "4. Пульсометрия\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1148,15 +969,16 @@ test1 = Dialog(
         state=test1SG.c4s3
     ),
     Window(
-        Format("Впереди заключительное упражнение в комплексе ОРУ «Упор присев – упор лёжа (прыжком)» по плану- конспекту запланировано 10 повторений. Но ты помнишь, что Костя, Дима, Максим и Оля в прошлый раз легко сделали больше 13 повторений, а Федя, Егор, Вика и Марина с трудом выполнили 5 повторений.\n"
-               "<b>Какую дозировку задашь?</b>\n"
-               "<b>"
-               "1. «Всем сделать 10 повторений. Начали!»\n"
-               "2. «Даю вам 15 секунд. Кто сделает больше всех?! Начали!»\n"
-               "3. «Всем сделать 10 повторений. Федя, Егор, Вика и Марина, Вам хотя бы 7 раз. Начали!»\n"
-               "4. «Всем сделать 10 повторений. Костя, Дима, Максим и Оля, Вам 15. Федя, Егор, Вика и Марина, Вам 7. Начали!»\n"
-               "</b>"
-               ),
+        Format(
+            "Впереди заключительное упражнение в комплексе ОРУ «Упор присев – упор лёжа (прыжком)» по плану- конспекту запланировано 10 повторений. Но ты помнишь, что Костя, Дима, Максим и Оля в прошлый раз легко сделали больше 13 повторений, а Федя, Егор, Вика и Марина с трудом выполнили 5 повторений.\n"
+            "<b>Какую дозировку задашь?</b>\n"
+            "<b>"
+            "1. «Всем сделать 10 повторений. Начали!»\n"
+            "2. «Даю вам 15 секунд. Кто сделает больше всех?! Начали!»\n"
+            "3. «Всем сделать 10 повторений. Федя, Егор, Вика и Марина, Вам хотя бы 7 раз. Начали!»\n"
+            "4. «Всем сделать 10 повторений. Костя, Дима, Максим и Оля, Вам 15. Федя, Егор, Вика и Марина, Вам 7. Начали!»\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1265,15 +1087,16 @@ test1 = Dialog(
         state=test1SG.c6s1
     ),
     Window(
-        Format("К тебе снова подходит Настя и просит дать оценку её действиям при выполнении упражнения (уже, наверное, раз пятый за сегодня)."
-               "<b>Каким образом ты повысишь её интерес к занятию?</b>\n"
-               "<b>"
-               "1. Не хвалить, сказать, что она может лучше\n"
-               "2. Похвалить, не акцентируя внимания на недочётах\n"
-               "3. Укажешь расстояние до мишени и между партнёрами, четко обозначишь мишень и запретишь направлять мяч куда-либо ещё, дашь команду работать по свистку тренера\n"
-               "4. ???\n"
-               "</b>"
-               ),
+        Format(
+            "К тебе снова подходит Настя и просит дать оценку её действиям при выполнении упражнения (уже, наверное, раз пятый за сегодня)."
+            "<b>Каким образом ты повысишь её интерес к занятию?</b>\n"
+            "<b>"
+            "1. Не хвалить, сказать, что она может лучше\n"
+            "2. Похвалить, не акцентируя внимания на недочётах\n"
+            "3. Укажешь расстояние до мишени и между партнёрами, четко обозначишь мишень и запретишь направлять мяч куда-либо ещё, дашь команду работать по свистку тренера\n"
+            "4. ???\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1289,15 +1112,16 @@ test1 = Dialog(
         state=test1SG.c2s4
     ),
     Window(
-        Format("Перед игрой нужно объединиться в команды.\nУченики разделились на 4 команды. 2 команды девочек, 2 – мальчиков. Первая команда девочек надевает зелёные жилетки, вторая команда мальчиков надевает – желтые. Девочки начинают просить поменяться жилетками с мальчиками, так как жёлтые им нравятся больше. А мальчики не хотят меняться.\n"
-               "<b>Начинаются крики и ругань. Что будешь делать?</b>\n"
-               "<b>"
-               "1. Сказать, что это моё решение, и оно неизменно\n"
-               "2. Попросить мальчиков быть джентельменами и уступить девочкам\n"
-               "3. Выделить двух капитанов и пускай они решат на «Камень. Ножницы. Бумага»\n"
-               "4. Сказать, что сегодня так, а в следующий раз девочки наденут жёлтые жилетки\n"
-               "</b>"
-               ),
+        Format(
+            "Перед игрой нужно объединиться в команды.\nУченики разделились на 4 команды. 2 команды девочек, 2 – мальчиков. Первая команда девочек надевает зелёные жилетки, вторая команда мальчиков надевает – желтые. Девочки начинают просить поменяться жилетками с мальчиками, так как жёлтые им нравятся больше. А мальчики не хотят меняться.\n"
+            "<b>Начинаются крики и ругань. Что будешь делать?</b>\n"
+            "<b>"
+            "1. Сказать, что это моё решение, и оно неизменно\n"
+            "2. Попросить мальчиков быть джентельменами и уступить девочкам\n"
+            "3. Выделить двух капитанов и пускай они решат на «Камень. Ножницы. Бумага»\n"
+            "4. Сказать, что сегодня так, а в следующий раз девочки наденут жёлтые жилетки\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1313,15 +1137,16 @@ test1 = Dialog(
         state=test1SG.c2s3
     ),
     Window(
-        Format("Замечаешь, что вратарь атакующей команды висит на перекладине от ворот. Ты останавливаешь игру и обращаешься к вратарю.\n"
-               "<b>Твои действия?</b>\n"
-               "<b>"
-               "1. Скажешь слезть и заставишь его делать 10 отжиманий\n"
-               "2. Скажешь слезть и сделаешь его полевым игроком\n"
-               "3. Скажешь слезть и посадишь его на скамейку\n"
-               "4. Скажешь слезть и проведешь с ним беседу\n"
-               "</b>"
-               ),
+        Format(
+            "Замечаешь, что вратарь атакующей команды висит на перекладине от ворот. Ты останавливаешь игру и обращаешься к вратарю.\n"
+            "<b>Твои действия?</b>\n"
+            "<b>"
+            "1. Скажешь слезть и заставишь его делать 10 отжиманий\n"
+            "2. Скажешь слезть и сделаешь его полевым игроком\n"
+            "3. Скажешь слезть и посадишь его на скамейку\n"
+            "4. Скажешь слезть и проведешь с ним беседу\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1337,15 +1162,16 @@ test1 = Dialog(
         state=test1SG.c6s4
     ),
     Window(
-        Format("После занятия к тебе подошла мама Саши. Она утверждает, что её ребенок сильно устаёт.\nИ спрашивает, зачем ты даёшь такую нагрузку на занятиях в таком возрасте?\n"
-               "<b>Что ты сделаешь?</b>\n"
-               "<b>"
-               "1. Скажешь ей: «Если Вас что- то не устраивает, то обращайтесь к администрации.»\n"
-               "2. Скажешь ей: «Усталость – это нормально, ребёнок должен уставать. Я знаю это лучше Вас. Всё-таки не первый день с детьми работаю.»\n"
-               "3. Пригласишь её на следующее занятие, чтобы она понаблюдала, как проходит занятие и чем дети занимаются.\n"
-               "4. Скажешь, что этот вопрос уже задавали, поэтому придешь на родительское собрание и расскажешь всем, как влияют физические упражнения на организм ребёнка.\n"
-               "</b>"
-               ),
+        Format(
+            "После занятия к тебе подошла мама Саши. Она утверждает, что её ребенок сильно устаёт.\nИ спрашивает, зачем ты даёшь такую нагрузку на занятиях в таком возрасте?\n"
+            "<b>Что ты сделаешь?</b>\n"
+            "<b>"
+            "1. Скажешь ей: «Если Вас что- то не устраивает, то обращайтесь к администрации.»\n"
+            "2. Скажешь ей: «Усталость – это нормально, ребёнок должен уставать. Я знаю это лучше Вас. Всё-таки не первый день с детьми работаю.»\n"
+            "3. Пригласишь её на следующее занятие, чтобы она понаблюдала, как проходит занятие и чем дети занимаются.\n"
+            "4. Скажешь, что этот вопрос уже задавали, поэтому придешь на родительское собрание и расскажешь всем, как влияют физические упражнения на организм ребёнка.\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1361,15 +1187,16 @@ test1 = Dialog(
         state=test1SG.c7s4
     ),
     Window(
-        Format("Через полчаса тебя вызывает завуч на беседу. Мама Саши написала на тебя жалобу на имя директора. Из жалобы следует, что она не согласна с тем, что ребёнок может уставать после занятия.\n"
-               "<b>Как будешь выходить из этой ситуации?</b>\n"
-               "<b>"
-               "1. ???\n"
-               "2. Скажешь: «Вот вам тортик. Решите, пожалуйста, эту проблему без моего участия.»\n"
-               "3. Обоснуешь администрации правильность своих действий, чтобы они сами объяснили это родителю.\n"
-               "4. Объяснишь администрации правильность своих действий. И вместе с представителем администрации встретишься с родителем.\n"
-               "</b>"
-               ),
+        Format(
+            "Через полчаса тебя вызывает завуч на беседу. Мама Саши написала на тебя жалобу на имя директора. Из жалобы следует, что она не согласна с тем, что ребёнок может уставать после занятия.\n"
+            "<b>Как будешь выходить из этой ситуации?</b>\n"
+            "<b>"
+            "1. ???\n"
+            "2. Скажешь: «Вот вам тортик. Решите, пожалуйста, эту проблему без моего участия.»\n"
+            "3. Обоснуешь администрации правильность своих действий, чтобы они сами объяснили это родителю.\n"
+            "4. Объяснишь администрации правильность своих действий. И вместе с представителем администрации встретишься с родителем.\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1385,15 +1212,16 @@ test1 = Dialog(
         state=test1SG.c7s5
     ),
     Window(
-        Format("После беседы с завучем у тебя появилась идея получить обратную связь от родителей по итогам первых трёх занятий. Ты знаешь, что один из самых удобных способов реализации этой идеи – разослать опрос в Google Формы. \n"
-               "<b>Какой алгоритм действий выберешь?</b>\n"
-               "<b>"
-               "1. Напишешь название опроса -> Объяснишь для чего он нужен и сколько времени займёт -> Попросишь указать группу и возраст детей -> Составишь 5 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в мессенджере каждому родителю лично -> Соберешь статистику и сделаешь выводы\n"
-               "2. Напишешь название опроса -> Объяснишь для чего он нужен и сколько времени займёт -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 7 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в общую группу в мессенджере -> Соберешь статистику и сделаешь выводы\n"
-               "3. Напишешь название опроса -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 5 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в общую группу в мессенджере -> Соберешь статистику\n"
-               "4. Напишешь название опроса -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 15 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос по почте каждому родителю лично -> Соберешь статистику\n"
-               "</b>"
-               ),
+        Format(
+            "После беседы с завучем у тебя появилась идея получить обратную связь от родителей по итогам первых трёх занятий. Ты знаешь, что один из самых удобных способов реализации этой идеи – разослать опрос в Google Формы. \n"
+            "<b>Какой алгоритм действий выберешь?</b>\n"
+            "<b>"
+            "1. Напишешь название опроса -> Объяснишь для чего он нужен и сколько времени займёт -> Попросишь указать группу и возраст детей -> Составишь 5 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в мессенджере каждому родителю лично -> Соберешь статистику и сделаешь выводы\n"
+            "2. Напишешь название опроса -> Объяснишь для чего он нужен и сколько времени займёт -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 7 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в общую группу в мессенджере -> Соберешь статистику и сделаешь выводы\n"
+            "3. Напишешь название опроса -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 5 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в общую группу в мессенджере -> Соберешь статистику\n"
+            "4. Напишешь название опроса -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 15 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос по почте каждому родителю лично -> Соберешь статистику\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1409,15 +1237,16 @@ test1 = Dialog(
         state=test1SG.c5s5
     ),
     Window(
-        Format("Входя в зал тебе на глаза попался градусник, который показывает, что температура воздуха в зале сейчас 17 градусов. У тебя возникло сомнение: «Не слишком ли холодно?».\n"
-               "<b>Какой документ подскажет тебе, какой должна быть температура в спортивном зале?</b>\n"
-               "<b>"
-               "1. Федеральный закон «Об образовании в Российской Федерации» от 29.12.2012 No273-ФЗ\n"
-               "2. Федеральный закон «О физической культуре и спорте в Российской Федерации» от 04.12.2007 No329-ФЗ\n"
-               '3. Приказ Минспорта России от 30.06.2021 No485 «Об утверждении федерального стандарта спортивной подготовки по виду спорта "гандбол"»\n'
-               "4. СанПиН 2.4.2.2821-10 «Санитарно-эпидемиологические требования к условиям и организации обучения в общеобразовательных учреждениях»\n"
-               "</b>"
-               ),
+        Format(
+            "Входя в зал тебе на глаза попался градусник, который показывает, что температура воздуха в зале сейчас 17 градусов. У тебя возникло сомнение: «Не слишком ли холодно?».\n"
+            "<b>Какой документ подскажет тебе, какой должна быть температура в спортивном зале?</b>\n"
+            "<b>"
+            "1. Федеральный закон «Об образовании в Российской Федерации» от 29.12.2012 No273-ФЗ\n"
+            "2. Федеральный закон «О физической культуре и спорте в Российской Федерации» от 04.12.2007 No329-ФЗ\n"
+            '3. Приказ Минспорта России от 30.06.2021 No485 «Об утверждении федерального стандарта спортивной подготовки по виду спорта "гандбол"»\n'
+            "4. СанПиН 2.4.2.2821-10 «Санитарно-эпидемиологические требования к условиям и организации обучения в общеобразовательных учреждениях»\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1433,15 +1262,16 @@ test1 = Dialog(
         state=test1SG.c8s3
     ),
     Window(
-        Format("Подводя итоги занятия, ты понимаешь, что занимающиеся уже хорошо освоили бросок, хотя на разучивание по планированию отводилось два занятия.\n"
-               "<b>В какой документ внесешь изменения в первую очередь?</b>\n"
-               "<b>"
-               "1. Учебная программа\n"
-               "2. План подготовки к соревнованиям\n"
-               '3. План-график годичного цикла\n'
-               "4. План-конспект следующего тренировочного занятия\n"
-               "</b>"
-               ),
+        Format(
+            "Подводя итоги занятия, ты понимаешь, что занимающиеся уже хорошо освоили бросок, хотя на разучивание по планированию отводилось два занятия.\n"
+            "<b>В какой документ внесешь изменения в первую очередь?</b>\n"
+            "<b>"
+            "1. Учебная программа\n"
+            "2. План подготовки к соревнованиям\n"
+            '3. План-график годичного цикла\n'
+            "4. План-конспект следующего тренировочного занятия\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1457,14 +1287,15 @@ test1 = Dialog(
         state=test1SG.c8s1
     ),
     Window(
-        Format("Раз уж начали вносить изменения в документы планирования, то необходимо определиться, какое минимальное количество отборочных игр надо провести в этом году в соответствии со стандартом спортивной подготовки по гандболу?\n"
-               "<b>"
-               "1. 3\n"
-               "2. 2\n"
-               '3. 1\n'
-               "4. 0\n"
-               "</b>"
-               ),
+        Format(
+            "Раз уж начали вносить изменения в документы планирования, то необходимо определиться, какое минимальное количество отборочных игр надо провести в этом году в соответствии со стандартом спортивной подготовки по гандболу?\n"
+            "<b>"
+            "1. 3\n"
+            "2. 2\n"
+            '3. 1\n'
+            "4. 0\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1480,14 +1311,15 @@ test1 = Dialog(
         state=test1SG.c8s2
     ),
     Window(
-        Format("Прежде чем с радостью отправиться домой, осталось решить какое домашнее задание дашь после следующего занятия?\n"
-               "<b>"
-               "1. Установить приложение «Калькулятор калорий» — отчитаться на следующем занятии\n"
-               "2. Установить приложение «Шагомер» — присылать скриншоты тебе в мессенджер\n"
-               '3. Отправлять каждый вечер тебе Гугл форму\n'
-               "4. Использовать приложение «Личный дневник» (Режим дня: часы сна, часы приёмов пищи, часы занятий физической активностью)\n"
-               "</b>"
-               ),
+        Format(
+            "Прежде чем с радостью отправиться домой, осталось решить какое домашнее задание дашь после следующего занятия?\n"
+            "<b>"
+            "1. Установить приложение «Калькулятор калорий» — отчитаться на следующем занятии\n"
+            "2. Установить приложение «Шагомер» — присылать скриншоты тебе в мессенджер\n"
+            '3. Отправлять каждый вечер тебе Гугл форму\n'
+            "4. Использовать приложение «Личный дневник» (Режим дня: часы сна, часы приёмов пищи, часы занятий физической активностью)\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
@@ -1503,15 +1335,16 @@ test1 = Dialog(
         state=test1SG.c3s4
     ),
     Window(
-        Format("Вот уже вечером, сидя дома, ты узнаешь, что где-то произошёл пожар. И задумываешься: «А что я буду делать при срабатывании пожарной сигнализации на занятии?».\n"
-               "<b>В каком документе прописан порядок действий при возникновении пожара?\n</b>"
-               "<b>"
-               "1. Декларация пожарной безопасности образовательной организации\n"
-               "2. Устав образовательной организации\n"
-               '3. Приказ МЧС Р «Об утверждении норм пожарной безопасности»\n'
-               "4. План действий администрации и работников образовательной организации в случае пожара\n"
-               "</b>"
-               ),
+        Format(
+            "Вот уже вечером, сидя дома, ты узнаешь, что где-то произошёл пожар. И задумываешься: «А что я буду делать при срабатывании пожарной сигнализации на занятии?».\n"
+            "<b>В каком документе прописан порядок действий при возникновении пожара?\n</b>"
+            "<b>"
+            "1. Декларация пожарной безопасности образовательной организации\n"
+            "2. Устав образовательной организации\n"
+            '3. Приказ МЧС Р «Об утверждении норм пожарной безопасности»\n'
+            "4. План действий администрации и работников образовательной организации в случае пожара\n"
+            "</b>"
+        ),
         Row(Select(
             Format("{item}"),
             items=["1",
