@@ -137,7 +137,7 @@ async def c5s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c5s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c5s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 5)
 
@@ -149,7 +149,7 @@ async def c5s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c5s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c5s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 6)
 
@@ -161,7 +161,7 @@ async def c5s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c4s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c4s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 7)
 
@@ -173,7 +173,7 @@ async def c4s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c6s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c6s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 8)
 
@@ -185,7 +185,7 @@ async def c6s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c7s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c7s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 9)
 
@@ -197,7 +197,7 @@ async def c7s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c7s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c7s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 10)
 
@@ -209,7 +209,7 @@ async def c7s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c1s5_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c1s5"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 11)
 
@@ -221,7 +221,7 @@ async def c1s5_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c1s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c1s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 12)
 
@@ -233,7 +233,7 @@ async def c1s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c3s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c3s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 13)
 
@@ -245,7 +245,7 @@ async def c3s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c3s2_1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c3s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 14)
 
@@ -257,7 +257,7 @@ async def c3s2_1_handler(c: ChatEvent, select: Select, manager: DialogManager, i
 async def c3s2_2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c3s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 14)
 
@@ -269,7 +269,7 @@ async def c3s2_2_handler(c: ChatEvent, select: Select, manager: DialogManager, i
 async def c3s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c3s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 15)
 
@@ -281,7 +281,7 @@ async def c3s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c2s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c2s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 16)
 
@@ -293,7 +293,7 @@ async def c2s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c4s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c4s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 17)
 
@@ -305,7 +305,7 @@ async def c4s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c4s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c4s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 18)
 
@@ -317,7 +317,7 @@ async def c4s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c2s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c2s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 19)
 
@@ -329,7 +329,7 @@ async def c2s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c6s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c6s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 20)
 
@@ -341,7 +341,7 @@ async def c6s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c4s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c4s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 21)
 
@@ -353,7 +353,7 @@ async def c4s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c6s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c6s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 22)
 
@@ -365,7 +365,7 @@ async def c6s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c2s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c2s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 23)
 
@@ -377,7 +377,7 @@ async def c2s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c2s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c2s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 24)
 
@@ -389,7 +389,7 @@ async def c2s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c6s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c6s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 25)
 
@@ -401,7 +401,7 @@ async def c6s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c7s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c7s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 26)
 
@@ -413,7 +413,7 @@ async def c7s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c7s5_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c7s5"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 27)
 
@@ -425,7 +425,7 @@ async def c7s5_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c5s5_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c5s5"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 28)
 
@@ -437,7 +437,7 @@ async def c5s5_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c8s3_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c8s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 29)
 
@@ -449,7 +449,7 @@ async def c8s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c8s1_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c8s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 30)
 
@@ -461,7 +461,7 @@ async def c8s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c8s2_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c8s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 31)
 
@@ -473,7 +473,7 @@ async def c8s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c3s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["answer_buffer"] = \
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c3s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     await get_random_answers(manager, 32)
 
@@ -483,7 +483,7 @@ async def c3s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
 
 async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
-    manager.current_context().dialog_data["c5s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
+    manager.current_context().dialog_data["c8s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
     manager.current_context().dialog_data["end_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
 
@@ -619,12 +619,11 @@ test1 = Dialog(
     ),
     Window(
         Format("<b>Какой показатель скажет тебе о том, что видео достоверно?</b>\n"
-               "<b>"
-               "1. Ссылка на научные источники\n"
-               "2. Тренерский стаж автора\n"
-               "3. Спортивная квалификация автора\n"
-               "4. Грамотно подобранная терминология\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -643,12 +642,11 @@ test1 = Dialog(
     Window(
         Format("Ты решил дать детям в конце тренировки домашнее задание посмотреть подобранные материалы.\n"
                "<b>Каким образом ты донесёшь эту информацию?</b>\n"
-               "<b>"
-               "1. Вышлешь одному ученику ссылку и попросишь разослать её остальным\n"
-               "2. Вышлешь материалы в родительский чат и скажешь показать его детям\n"
-               "3. Скажешь название и попросишь учеников найти и изучить материалы его дома\n"
-               "4. После тренировки скажешь ученикам подойти к тебе с телефонами и отсканировать QR-код со ссылкой на материалы\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -667,23 +665,11 @@ test1 = Dialog(
     Window(
         Format("В план-конспект нужно добавить подвижную игру.\n"
                "<b>Какая из перечисленных больше подходит для детей этого возраста?</b>\n"
-               "<b>"
-               "1. «Ногой и головой через ворота»:\n"
-               "2 команды перебрасывают мяч через ворота, которые установлены по середине зала."
-               " Первая подача ногой, а дальше отбивают головой через ворота. Кто не перебросил – выбывает.\n\n"
-               "2. «Тяжелые вышибалы»: "
-               "2 команды. Одна команда всем составом встаёт в середину зала."
-               " Другая распределяется по двум линиям атаки."
-               " Задача выбить всех игроков первой команды тяжелым мячом, который весит 3 кг.\n"
-               "3. «Рывок за мячом»:"
-               " 2 шеренги по коротким сторонам зала. Рассчитываются по порядку."
-               " Тренер кладёт мяч на середину зала, называет номера и по свистку 2 игрока бегут к мячу."
-               " Побеждает тот, кто коснётся мяча первым.\n"
-               "4. «По наземной мишени»: все строятся в одну шеренгу, каждый с мячом в руках."
-               " Необходимо попасть в обруч, который лежит перед воротами. "
-               "Бросил, подобрал мяч, вернулся в шеренгу, бросил..."
-               " Кто первым попадёт 3 раза?\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -702,12 +688,11 @@ test1 = Dialog(
     Window(
         Format(
             "<b>Тогда в какой форме ты произведёшь сбор данных о том, насколько твои ученики ознакомлены с техникой безопасности на занятии?</b>\n"
-            "<b>"
-            "1. Рассказ непосредственно перед началом игры в гандбол\n"
-            "2. Задание на внимание в конце занятия\n"
-            "3. Беседа в начале урока\n"
-            "4. Игра на внимание в начале урока\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -727,12 +712,11 @@ test1 = Dialog(
         Format(
             "Итак, на занятие пришло 18 учеников. Все построились в одну шеренгу. Все в спортивной форме. Но тут ты замечаешь, что Петя стоит в грязной уличной обуви."
             "<b>Что будешь делать?</b>\n"
-            "<b>"
-            "1. Наорёшь на Петю и выгонишь с занятия\n"
-            "2. Спросишь у Пети где «сменка» и заставишь заниматься босиком\n"
-            "3. Отправишь Петю мыть обувь, а потом подключишь его к работе\n"
-            "4. Посадишь Петю на скамью всё занятие наблюдать со стороны\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -752,12 +736,11 @@ test1 = Dialog(
         Format(
             "С Петей разобрались. Но пока решали вопрос с Петей, остальные стали обсуждать вчерашний матч сборной нашей страны с принципиальным соперником."
             "<b>Что скажешь?</b>\n"
-            "<b>"
-            "1. «Тишина! Петя, из-за тебя время тратим, так ещё и остальные болтать начинают! Кого выгнать?»\n"
-            "2. «Нечего там обсуждать! Играть не умеют всё равно! Беспомощные! Бегом по залу! Молча!»\n"
-            "3. Присоединишься к обсуждению. Обсудите игру. Расскажешь истории из своей жизни. Потом продолжишь занятие.\n"
-            "4. Присоединишься к обсуждению. Отметишь, что игра была интересной и предложишь продолжить занятие.\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -776,12 +759,11 @@ test1 = Dialog(
     Window(
         Format("Бег\nПора переходить на беговые упражнения!\n"
                "<b>Сколько времени ты отведёшь на упражнения в беге?</b>\n"
-               "<b>"
-               "1. 3 минуты\n"
-               "2. 5 минут\n"
-               "3. 7 минут\n"
-               "4. 10 минут\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -801,12 +783,11 @@ test1 = Dialog(
         Format(
             "Бег\nНа последних минутах бега ты замечаешь, что у Гали красные щёки, повышенная потливость, тяжёлое дыхание и нарушенная координация движений.\n"
             "<b>Что будешь делать?</b>\n"
-            "<b>"
-            "1. Продолжишь без дополнительных команд\n"
-            "2. Посадишь Галю на скамью\n"
-            "3. Скажешь Гале перейти на лёгкий бег\n"
-            "4. Скажешь Гале перейти на шаг и отправиться в конец колонны\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -826,12 +807,11 @@ test1 = Dialog(
         Format(
             "Диагностика\n Отлично! Беговые упражнения завершили. Теперь нужно оценить уровень полученной нагрузки.\n"
             "<b>Какой из перечисленных методов диагностики поможет это сделать?</b>\n"
-            "<b>"
-            "1. Проба Ромберга\n"
-            "2. Вопрос: «Устали или нет ещё?»\n"
-            "3. Внешняя оценка степени утомляемости\n"
-            "4. Пульсометрия\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -850,12 +830,11 @@ test1 = Dialog(
     Window(
         Format("Диагностика\n"
                "<b> Как организуешь проведение пульсометрии?</b>\n"
-               "<b>"
-               "1. В форме подвижной игры\n"
-               "2. В построении в одну шеренгу\n"
-               "3. В парах\n"
-               "4. В построении уступами\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -874,12 +853,11 @@ test1 = Dialog(
     Window(
         Format("Диагностика\n"
                "<b> Как организуешь проведение пульсометрии?</b>\n"
-               "<b>"
-               "1. Замерить каждому лично\n"
-               "2. Объединить в группы\n"
-               "3. Объединить в пары\n"
-               "4. Каждый измеряет себе сам\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -898,12 +876,11 @@ test1 = Dialog(
     Window(
         Format("Диагностика\n"
                "<b>Какие выводы сделаешь для себя?</b>\n"
-               "<b>"
-               "1. Нагрузка слишком большая. Подобраны сложные упражнения и темп работы очень высокий. В следующий раз повторю, они уже привыкли будет лучше.\n"
-               "2. Нагрузка выше оптимальной. Упражнения простые, но темп слишком высокий. В следующий раз проведу эти же упражнения в спокойном темпе.\n"
-               "3. Нагрузка недостаточная. Упражнения подобраны хорошо, но темп оказался низким. В следующий раз увеличу темп.\n"
-               "4. Нагрузка оптимальная. Хорошо подобраны упражнения и темп работы. В следующий раз нужно повторить.\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -922,13 +899,11 @@ test1 = Dialog(
     Window(
         Format("ОРУ\n"
                "Ты захотел поручить Ване провести 3 упражнения из комплекса ОРУ в подготовительной части занятия."
-               "<b>Когда ты предупредишь его о своём поручении?</b>\n"
-               "<b>"
-               "1. В процессе проведения комплекса ОРУ\n"
-               "2. Перед началом комплекса ОРУ\n"
-               "3. В начале тренировки\n"
-               "4. На прошлой тренировке\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -947,12 +922,11 @@ test1 = Dialog(
     Window(
         Format("Следующее упражнение на растяжку – из основной стойки сделать наклон и ..."
                "<b>Какое из действий выберешь с учётом возраста занимающихся?</b>\n"
-               "<b>"
-               "1. Коснуться кроссовок\n"
-               "2. Коснуться пола кончиками пальцев\n"
-               "3. Коснуться пола кулачками\n"
-               "4. Коснуться пола ладонями\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -972,12 +946,11 @@ test1 = Dialog(
         Format(
             "Впереди заключительное упражнение в комплексе ОРУ «Упор присев – упор лёжа (прыжком)» по плану- конспекту запланировано 10 повторений. Но ты помнишь, что Костя, Дима, Максим и Оля в прошлый раз легко сделали больше 13 повторений, а Федя, Егор, Вика и Марина с трудом выполнили 5 повторений.\n"
             "<b>Какую дозировку задашь?</b>\n"
-            "<b>"
-            "1. «Всем сделать 10 повторений. Начали!»\n"
-            "2. «Даю вам 15 секунд. Кто сделает больше всех?! Начали!»\n"
-            "3. «Всем сделать 10 повторений. Федя, Егор, Вика и Марина, Вам хотя бы 7 раз. Начали!»\n"
-            "4. «Всем сделать 10 повторений. Костя, Дима, Максим и Оля, Вам 15. Федя, Егор, Вика и Марина, Вам 7. Начали!»\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -995,12 +968,11 @@ test1 = Dialog(
     ),
     Window(
         Format("<b>В какой форме проведешь упражнение перед основной частью занятия?</b>\n"
-               "<b>"
-               "1. Проведение упражнения без эмоционального фона. «Выполняем подскоки под счёт 1-4»\n"
-               "2. Проведение упражнения с высоким эмоциональным фоном «Прыжки на месте и выкрикнуть своё имя»\n"
-               "3. Проведение подвижной игры без сюжета «Пробежать через линию»\n"
-               "4. Проведение подвижной сюжетно-ролевой игры «Два Мороза»\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -1019,12 +991,11 @@ test1 = Dialog(
     Window(
         Format("Для выполнения ведения гандбольного мяча тебе необходимо раздать ученикам гандбольные мячи.\n"
                "<b>Каким наиболее эффективным способом ты это сделаешь?</b>\n"
-               "<b>"
-               "1. Построишь в шеренгу и будешь лично раздавать каждому по мячу\n"
-               "2. Распределишь всех ребят по рабочим местам и раздашь каждому по мячу\n"
-               "3. В начале урока выберешь 2–3 дежурных, которые всем раздадут мячи\n"
-               "4. В процессе движения, когда они будут проходить мимо тебя, раздашь им мячи\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -1042,12 +1013,11 @@ test1 = Dialog(
     ),
     Window(
         Format("<b>Какую из этих фраз произнесешь для объяснения как вести мяч?</b>\n"
-               "<b>"
-               "1. Выгуливаем нашего Колобка по тропинке\n"
-               "2. Ведём мяч по прямой\n"
-               "3. Ведём Колобка по прямой\n"
-               "4. Ведём мяч по тропинке\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -1065,12 +1035,11 @@ test1 = Dialog(
     ),
     Window(
         Format("<b>Какие рекомендации для выполнения броска мяча в стену ты дашь детям?</b>\n"
-               "<b>"
-               "1. Расстояние на которые необходимо отойти от партнёра и от мишени и укажешь куда точно нужно бросать мяч\n"
-               "2. Укажешь расстояние до мишени и между партнёром, четко обозначишь мишень и запретишь бросать куда-либо ещё\n"
-               "3. Укажешь расстояние до мишени и между партнёрами, четко обозначишь мишень и запретишь направлять мяч куда-либо ещё, дашь команду работать по свистку тренера\n"
-               "4. Перед началом выполнения упражнения проведешь опрос о технике безопасности и дополнишь их ответы своими рекомендациями к выполнению упражнения на основе предыдущих занятий\n"
-               "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
                ),
         Row(Select(
             Format("{item}"),
@@ -1090,12 +1059,11 @@ test1 = Dialog(
         Format(
             "К тебе снова подходит Настя и просит дать оценку её действиям при выполнении упражнения (уже, наверное, раз пятый за сегодня)."
             "<b>Каким образом ты повысишь её интерес к занятию?</b>\n"
-            "<b>"
-            "1. Не хвалить, сказать, что она может лучше\n"
-            "2. Похвалить, не акцентируя внимания на недочётах\n"
-            "3. Укажешь расстояние до мишени и между партнёрами, четко обозначишь мишень и запретишь направлять мяч куда-либо ещё, дашь команду работать по свистку тренера\n"
-            "4. ???\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1115,12 +1083,11 @@ test1 = Dialog(
         Format(
             "Перед игрой нужно объединиться в команды.\nУченики разделились на 4 команды. 2 команды девочек, 2 – мальчиков. Первая команда девочек надевает зелёные жилетки, вторая команда мальчиков надевает – желтые. Девочки начинают просить поменяться жилетками с мальчиками, так как жёлтые им нравятся больше. А мальчики не хотят меняться.\n"
             "<b>Начинаются крики и ругань. Что будешь делать?</b>\n"
-            "<b>"
-            "1. Сказать, что это моё решение, и оно неизменно\n"
-            "2. Попросить мальчиков быть джентельменами и уступить девочкам\n"
-            "3. Выделить двух капитанов и пускай они решат на «Камень. Ножницы. Бумага»\n"
-            "4. Сказать, что сегодня так, а в следующий раз девочки наденут жёлтые жилетки\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1140,12 +1107,11 @@ test1 = Dialog(
         Format(
             "Замечаешь, что вратарь атакующей команды висит на перекладине от ворот. Ты останавливаешь игру и обращаешься к вратарю.\n"
             "<b>Твои действия?</b>\n"
-            "<b>"
-            "1. Скажешь слезть и заставишь его делать 10 отжиманий\n"
-            "2. Скажешь слезть и сделаешь его полевым игроком\n"
-            "3. Скажешь слезть и посадишь его на скамейку\n"
-            "4. Скажешь слезть и проведешь с ним беседу\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1165,12 +1131,11 @@ test1 = Dialog(
         Format(
             "После занятия к тебе подошла мама Саши. Она утверждает, что её ребенок сильно устаёт.\nИ спрашивает, зачем ты даёшь такую нагрузку на занятиях в таком возрасте?\n"
             "<b>Что ты сделаешь?</b>\n"
-            "<b>"
-            "1. Скажешь ей: «Если Вас что- то не устраивает, то обращайтесь к администрации.»\n"
-            "2. Скажешь ей: «Усталость – это нормально, ребёнок должен уставать. Я знаю это лучше Вас. Всё-таки не первый день с детьми работаю.»\n"
-            "3. Пригласишь её на следующее занятие, чтобы она понаблюдала, как проходит занятие и чем дети занимаются.\n"
-            "4. Скажешь, что этот вопрос уже задавали, поэтому придешь на родительское собрание и расскажешь всем, как влияют физические упражнения на организм ребёнка.\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1190,12 +1155,11 @@ test1 = Dialog(
         Format(
             "Через полчаса тебя вызывает завуч на беседу. Мама Саши написала на тебя жалобу на имя директора. Из жалобы следует, что она не согласна с тем, что ребёнок может уставать после занятия.\n"
             "<b>Как будешь выходить из этой ситуации?</b>\n"
-            "<b>"
-            "1. ???\n"
-            "2. Скажешь: «Вот вам тортик. Решите, пожалуйста, эту проблему без моего участия.»\n"
-            "3. Обоснуешь администрации правильность своих действий, чтобы они сами объяснили это родителю.\n"
-            "4. Объяснишь администрации правильность своих действий. И вместе с представителем администрации встретишься с родителем.\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1215,12 +1179,11 @@ test1 = Dialog(
         Format(
             "После беседы с завучем у тебя появилась идея получить обратную связь от родителей по итогам первых трёх занятий. Ты знаешь, что один из самых удобных способов реализации этой идеи – разослать опрос в Google Формы. \n"
             "<b>Какой алгоритм действий выберешь?</b>\n"
-            "<b>"
-            "1. Напишешь название опроса -> Объяснишь для чего он нужен и сколько времени займёт -> Попросишь указать группу и возраст детей -> Составишь 5 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в мессенджере каждому родителю лично -> Соберешь статистику и сделаешь выводы\n"
-            "2. Напишешь название опроса -> Объяснишь для чего он нужен и сколько времени займёт -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 7 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в общую группу в мессенджере -> Соберешь статистику и сделаешь выводы\n"
-            "3. Напишешь название опроса -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 5 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос в общую группу в мессенджере -> Соберешь статистику\n"
-            "4. Напишешь название опроса -> Попросишь указать группу и возраст детей -> Потребуешь указать личные данные -> Составишь 15 вопросов -> Внесёшь вопросы в Google Формы -> Отправишь ссылку на опрос по почте каждому родителю лично -> Соберешь статистику\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1240,12 +1203,11 @@ test1 = Dialog(
         Format(
             "Входя в зал тебе на глаза попался градусник, который показывает, что температура воздуха в зале сейчас 17 градусов. У тебя возникло сомнение: «Не слишком ли холодно?».\n"
             "<b>Какой документ подскажет тебе, какой должна быть температура в спортивном зале?</b>\n"
-            "<b>"
-            "1. Федеральный закон «Об образовании в Российской Федерации» от 29.12.2012 No273-ФЗ\n"
-            "2. Федеральный закон «О физической культуре и спорте в Российской Федерации» от 04.12.2007 No329-ФЗ\n"
-            '3. Приказ Минспорта России от 30.06.2021 No485 «Об утверждении федерального стандарта спортивной подготовки по виду спорта "гандбол"»\n'
-            "4. СанПиН 2.4.2.2821-10 «Санитарно-эпидемиологические требования к условиям и организации обучения в общеобразовательных учреждениях»\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1265,12 +1227,11 @@ test1 = Dialog(
         Format(
             "Подводя итоги занятия, ты понимаешь, что занимающиеся уже хорошо освоили бросок, хотя на разучивание по планированию отводилось два занятия.\n"
             "<b>В какой документ внесешь изменения в первую очередь?</b>\n"
-            "<b>"
-            "1. Учебная программа\n"
-            "2. План подготовки к соревнованиям\n"
-            '3. План-график годичного цикла\n'
-            "4. План-конспект следующего тренировочного занятия\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1289,12 +1250,11 @@ test1 = Dialog(
     Window(
         Format(
             "Раз уж начали вносить изменения в документы планирования, то необходимо определиться, какое минимальное количество отборочных игр надо провести в этом году в соответствии со стандартом спортивной подготовки по гандболу?\n"
-            "<b>"
-            "1. 3\n"
-            "2. 2\n"
-            '3. 1\n'
-            "4. 0\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1313,12 +1273,11 @@ test1 = Dialog(
     Window(
         Format(
             "Прежде чем с радостью отправиться домой, осталось решить какое домашнее задание дашь после следующего занятия?\n"
-            "<b>"
-            "1. Установить приложение «Калькулятор калорий» — отчитаться на следующем занятии\n"
-            "2. Установить приложение «Шагомер» — присылать скриншоты тебе в мессенджер\n"
-            '3. Отправлять каждый вечер тебе Гугл форму\n'
-            "4. Использовать приложение «Личный дневник» (Режим дня: часы сна, часы приёмов пищи, часы занятий физической активностью)\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
@@ -1338,12 +1297,11 @@ test1 = Dialog(
         Format(
             "Вот уже вечером, сидя дома, ты узнаешь, что где-то произошёл пожар. И задумываешься: «А что я буду делать при срабатывании пожарной сигнализации на занятии?».\n"
             "<b>В каком документе прописан порядок действий при возникновении пожара?\n</b>"
-            "<b>"
-            "1. Декларация пожарной безопасности образовательной организации\n"
-            "2. Устав образовательной организации\n"
-            '3. Приказ МЧС Р «Об утверждении норм пожарной безопасности»\n'
-            "4. План действий администрации и работников образовательной организации в случае пожара\n"
-            "</b>"
+              "<b>"
+              "{% for answer in answer_variants %}"
+              "{{answer}}\n"
+              "{% endfor %}"
+              "</b>"
         ),
         Row(Select(
             Format("{item}"),
