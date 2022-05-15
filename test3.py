@@ -13,4 +13,4 @@ from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.kbd import Start
 from aiogram_dialog.widgets.text import Const
 
-class test3SG(StatesGroup):
+# class test3SG(StatesGroup):
