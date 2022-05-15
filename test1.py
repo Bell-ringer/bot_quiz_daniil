@@ -259,7 +259,7 @@ async def c3s2_2_handler(c: ChatEvent, select: Select, manager: DialogManager, i
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c3s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 14)
+    await get_random_answers(manager, 15)
 
     global next_state
     next_state = test1SG.c3s3
@@ -271,7 +271,7 @@ async def c3s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c3s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 15)
+    await get_random_answers(manager, 16)
 
     global next_state
     next_state = test1SG.c2s1
@@ -283,7 +283,7 @@ async def c2s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c2s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 16)
+    await get_random_answers(manager, 17)
 
     global next_state
     next_state = test1SG.c4s3
@@ -295,7 +295,7 @@ async def c4s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c4s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 17)
+    await get_random_answers(manager, 18)
 
     global next_state
     next_state = test1SG.c4s2
@@ -307,7 +307,7 @@ async def c4s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c4s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 18)
+    await get_random_answers(manager, 19)
 
     global next_state
     next_state = test1SG.c2s2
@@ -319,7 +319,7 @@ async def c2s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c2s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 19)
+    await get_random_answers(manager, 20)
 
     global next_state
     next_state = test1SG.c6s3
@@ -331,7 +331,7 @@ async def c6s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c6s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 20)
+    await get_random_answers(manager, 21)
 
     global next_state
     next_state = test1SG.c4s1
@@ -343,7 +343,7 @@ async def c4s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c4s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 21)
+    await get_random_answers(manager, 22)
 
     global next_state
     next_state = test1SG.c6s1
@@ -355,7 +355,7 @@ async def c6s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c6s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 22)
+    await get_random_answers(manager, 23)
 
     global next_state
     next_state = test1SG.c2s4
@@ -367,7 +367,7 @@ async def c2s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c2s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 23)
+    await get_random_answers(manager, 24)
 
     global next_state
     next_state = test1SG.c2s3
@@ -379,7 +379,7 @@ async def c2s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c2s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 24)
+    await get_random_answers(manager, 25)
 
     global next_state
     next_state = test1SG.c6s4
@@ -391,7 +391,7 @@ async def c6s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c6s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 25)
+    await get_random_answers(manager, 26)
 
     global next_state
     next_state = test1SG.c7s4
@@ -403,7 +403,7 @@ async def c7s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c7s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 26)
+    await get_random_answers(manager, 27)
 
     global next_state
     next_state = test1SG.c7s5
@@ -415,7 +415,7 @@ async def c7s5_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c7s5"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 27)
+    await get_random_answers(manager, 28)
 
     global next_state
     next_state = test1SG.c5s5
@@ -427,7 +427,7 @@ async def c5s5_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c5s5"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 28)
+    await get_random_answers(manager, 29)
 
     global next_state
     next_state = test1SG.c8s3
@@ -439,7 +439,7 @@ async def c8s3_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c8s3"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 29)
+    await get_random_answers(manager, 30)
 
     global next_state
     next_state = test1SG.c8s1
@@ -451,7 +451,7 @@ async def c8s1_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c8s1"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 30)
+    await get_random_answers(manager, 31)
 
     global next_state
     next_state = test1SG.c8s2
@@ -463,7 +463,7 @@ async def c8s2_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c8s2"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 31)
+    await get_random_answers(manager, 32)
 
     global next_state
     next_state = test1SG.c3s4
@@ -475,7 +475,7 @@ async def c3s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
         manager.current_context().dialog_data["answer_stuff"][item_id][1]
     manager.current_context().dialog_data["c3s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    await get_random_answers(manager, 32)
+    await get_random_answers(manager, 33)
 
     global next_state
     next_state = test1SG.c8s4
