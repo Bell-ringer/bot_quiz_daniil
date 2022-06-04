@@ -493,14 +493,14 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
                                  f'Время начала теста:\n{manager.current_context().dialog_data["start_time"]}\n'
                                  f'Время окончания теста:\n{manager.current_context().dialog_data["end_time"]}\n'
                                  'Твои результаты:\n'
-                                 f'Компетенция №1: {manager.current_context().dialog_data["c1s1"] + manager.current_context().dialog_data["c1s2"] + manager.current_context().dialog_data["c1s3"] + manager.current_context().dialog_data["c1s5"]}'
-                                 f'Компетенция №2: {manager.current_context().dialog_data["c2s1"] + manager.current_context().dialog_data["c2s2"] + manager.current_context().dialog_data["c2s3"] + manager.current_context().dialog_data["c2s4"]}'
-                                 f'Компетенция №3: {manager.current_context().dialog_data["c3s1"] + manager.current_context().dialog_data["c3s2"] + manager.current_context().dialog_data["c3s3"] + manager.current_context().dialog_data["c3s4"]}'
-                                 f'Компетенция №4: {manager.current_context().dialog_data["c4s1"] + manager.current_context().dialog_data["c4s2"] + manager.current_context().dialog_data["c4s3"] + manager.current_context().dialog_data["c4s4"]}'
-                                 f'Компетенция №5: {manager.current_context().dialog_data["c5s1"] + manager.current_context().dialog_data["c5s2"] + manager.current_context().dialog_data["c5s4"] + manager.current_context().dialog_data["c5s5"]}'
-                                 f'Компетенция №6: {manager.current_context().dialog_data["c6s1"] + manager.current_context().dialog_data["c6s2"] + manager.current_context().dialog_data["c6s3"] + manager.current_context().dialog_data["c6s4"]}'
-                                 f'Компетенция №7: {manager.current_context().dialog_data["c7s2"] + manager.current_context().dialog_data["c7s3"] + manager.current_context().dialog_data["c7s4"] + manager.current_context().dialog_data["c7s5"]}'
-                                 f'Компетенция №8: {manager.current_context().dialog_data["c8s1"] + manager.current_context().dialog_data["c8s2"] + manager.current_context().dialog_data["c8s3"] + manager.current_context().dialog_data["c8s4"]}'
+                                 f'Компетенция №1: {(manager.current_context().dialog_data["c1s1"] + manager.current_context().dialog_data["c1s2"] + manager.current_context().dialog_data["c1s3"] + manager.current_context().dialog_data["c1s5"])/16*100}%\n'
+                                 f'Компетенция №2: {(manager.current_context().dialog_data["c2s1"] + manager.current_context().dialog_data["c2s2"] + manager.current_context().dialog_data["c2s3"] + manager.current_context().dialog_data["c2s4"])/16*100}%\n'
+                                 f'Компетенция №3: {(manager.current_context().dialog_data["c3s1"] + manager.current_context().dialog_data["c3s2"] + manager.current_context().dialog_data["c3s3"] + manager.current_context().dialog_data["c3s4"])/16*100}%\n'
+                                 f'Компетенция №4: {(manager.current_context().dialog_data["c4s1"] + manager.current_context().dialog_data["c4s2"] + manager.current_context().dialog_data["c4s3"] + manager.current_context().dialog_data["c4s4"])/16*100}%\n'
+                                 f'Компетенция №5: {(manager.current_context().dialog_data["c5s1"] + manager.current_context().dialog_data["c5s2"] + manager.current_context().dialog_data["c5s4"] + manager.current_context().dialog_data["c5s5"])/16*100}%\n'
+                                 f'Компетенция №6: {(manager.current_context().dialog_data["c6s1"] + manager.current_context().dialog_data["c6s2"] + manager.current_context().dialog_data["c6s3"] + manager.current_context().dialog_data["c6s4"])/16*100}%\n'
+                                 f'Компетенция №7: {(manager.current_context().dialog_data["c7s2"] + manager.current_context().dialog_data["c7s3"] + manager.current_context().dialog_data["c7s4"] + manager.current_context().dialog_data["c7s5"])/16*100}%\n'
+                                 f'Компетенция №8: {(manager.current_context().dialog_data["c8s1"] + manager.current_context().dialog_data["c8s2"] + manager.current_context().dialog_data["c8s3"] + manager.current_context().dialog_data["c8s4"])/16*100}%\n'
                                  )
     await manager.done()
 
