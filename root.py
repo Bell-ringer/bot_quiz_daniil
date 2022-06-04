@@ -12,7 +12,7 @@ from config import ADMIN_ID
 from database import admin_load
 
 
-async def load_handler():
+async def load_handler(m: Message, dialog_manager: DialogManager):
     await admin_load()
 
     MyBot.bot.send_document(ADMIN_ID, open("results.xlsx", 'rb'))
