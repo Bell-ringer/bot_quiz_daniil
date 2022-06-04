@@ -40,7 +40,7 @@ class Results(Model):
 
 async def admin_load():
     conn = Tortoise.get_connection("default")
-    await conn.execute_query("\copy results TO 'results.csv' CSV DELIMITER ',';")
+    await conn.execute_query("COPY results TO 'results.csv' CSV DELIMITER ',';")
 
     read_file = pd.read_csv(r'results.csv')
     read_file.to_excel(r'results.xlsx', index=None, header=True)
