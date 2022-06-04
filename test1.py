@@ -92,7 +92,7 @@ async def get_random_answers(manager: DialogManager, situation: int):
 
 
 async def start_test(c: CallbackQuery, button: Button, manager: DialogManager):
-    manager.current_context().dialog_data["start_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    manager.current_context().dialog_data["start_time"] = datetime.now().strftime("%d.%m.%y %H:%M:%S")
 
     await get_random_answers(manager, 1)
     await manager.dialog().switch_to(test1SG.c1s1)
@@ -485,7 +485,7 @@ async def c3s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["c8s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["end_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    manager.current_context().dialog_data["end_time"] = datetime.now().strftime("%d.%m.%y %H:%M:%S")
 
     await MyBot.bot.send_message(c.from_user.id,
                                  'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\n'
