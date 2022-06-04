@@ -1,12 +1,5 @@
-from aiogram.types import CallbackQuery, ParseMode
-
-from aiogram_dialog import ChatEvent
-from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Button, Select, Back, Column, Cancel, Url, SwitchTo
-from aiogram_dialog.widgets.text import Format
-
 from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 from aiogram_dialog import Dialog, DialogManager, Window, StartMode
 from aiogram_dialog.manager.protocols import LaunchMode
@@ -15,14 +8,33 @@ from aiogram_dialog.widgets.text import Const
 
 from bot import MyBot
 from test1 import test1SG
+from config import ADMIN_ID
+from database import admin_load
+
+
+async def load_handler():
+    await admin_load()
+
+    MyBot.bot.send_document(ADMIN_ID, open("results.xlsx", 'rb'))
 
 
 async def start(m: Message, dialog_manager: DialogManager):
-    await MyBot.bot.send_message(m.from_user.id, f'Привет, <b>{m.from_user.first_name}</b>\n'
-                                                 f'Это бот с тестами для преподавателей', parse_mode="HTML")
-    await dialog_manager.start(mainSG.choose_test, mode=StartMode.RESET_STACK)
+    if m.from_user.id == ADMIN_ID:
+        markup = ReplyKeyboardMarkup(resize_keyboard=True)
+        item = KeyboardButton('Выгрузить результаты .xls 📊')
+        markup.add(item)
+        await MyBot.bot.send_message(m.from_user.id, f'Привет, <b>{m.from_user.first_name}</b>\n'
+                                                     f'Это бот с тестами для преподавателей', parse_mode="HTML",
+                                     reply_markup=markup)
+        await dialog_manager.start(mainSG.choose_test, mode=StartMode.RESET_STACK)
+    else:
+        await MyBot.bot.send_message(m.from_user.id, f'Привет, <b>{m.from_user.first_name}</b>\n'
+                                                     f'Это бот с тестами для преподавателей', parse_mode="HTML")
+        await dialog_manager.start(mainSG.choose_test, mode=StartMode.RESET_STACK)
+
 
 MyBot.register_handler(method=start, commands=["start"])
+MyBot.register_handler(method=load_handler, text=['Выгрузить результаты .xls 📊'])
 
 
 class mainSG(StatesGroup):

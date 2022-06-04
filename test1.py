@@ -16,7 +16,7 @@ from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.kbd import Start
 from aiogram_dialog.widgets.text import Const
 
-from database import Situations
+from database import Situations, Results
 from bot import MyBot
 
 next_state: State
@@ -92,7 +92,11 @@ async def get_random_answers(manager: DialogManager, situation: int):
 
 
 async def start_test(c: CallbackQuery, button: Button, manager: DialogManager):
-    manager.current_context().dialog_data["start_time"] = datetime.now().strftime("%d.%m.%y %H:%M:%S")
+    manager.current_context().dialog_data["start_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    manager.current_context().dialog_data["user_id"] = c.from_user.id
+    manager.current_context().dialog_data["name"] = c.from_user.first_name
+
+    manager.current_context().dialog_data["try_num"] = await Results.filter(id=c.from_user.id).count()
 
     await get_random_answers(manager, 1)
     await manager.dialog().switch_to(test1SG.c1s1)
@@ -485,7 +489,7 @@ async def c3s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["c8s4"] = manager.current_context().dialog_data["answer_stuff"][item_id][2]
 
-    manager.current_context().dialog_data["end_time"] = datetime.now().strftime("%d.%m.%y %H:%M:%S")
+    manager.current_context().dialog_data["end_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
 
     await MyBot.bot.send_message(c.from_user.id,
                                  'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\n'
@@ -502,6 +506,21 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
                                  f'Компетенция №7: {(manager.current_context().dialog_data["c7s2"] + manager.current_context().dialog_data["c7s3"] + manager.current_context().dialog_data["c7s4"] + manager.current_context().dialog_data["c7s5"])/16*100}%\n'
                                  f'Компетенция №8: {(manager.current_context().dialog_data["c8s1"] + manager.current_context().dialog_data["c8s2"] + manager.current_context().dialog_data["c8s3"] + manager.current_context().dialog_data["c8s4"])/16*100}%\n'
                                  )
+
+    await Results.create(user_id=manager.current_context().dialog_data["user_id"],
+                         try_num=manager.current_context().dialog_data["try_num"],
+                         name=manager.current_context().dialog_data["name"],
+                         start_time=manager.current_context().dialog_data["start_time"],
+                         end_time=manager.current_context().dialog_data["end_time"],
+                         c1=(manager.current_context().dialog_data["c1s1"] + manager.current_context().dialog_data["c1s2"] + manager.current_context().dialog_data["c1s3"] + manager.current_context().dialog_data["c1s5"])/16*100,
+                         c2=(manager.current_context().dialog_data["c2s1"] + manager.current_context().dialog_data["c2s2"] + manager.current_context().dialog_data["c2s3"] + manager.current_context().dialog_data["c2s4"])/16*100,
+                         c3=(manager.current_context().dialog_data["c3s1"] + manager.current_context().dialog_data["c3s2"] + manager.current_context().dialog_data["c3s3"] + manager.current_context().dialog_data["c3s4"])/16*100,
+                         c4=(manager.current_context().dialog_data["c4s1"] + manager.current_context().dialog_data["c4s2"] + manager.current_context().dialog_data["c4s3"] + manager.current_context().dialog_data["c4s4"])/16*100,
+                         c5=(manager.current_context().dialog_data["c5s1"] + manager.current_context().dialog_data["c5s2"] + manager.current_context().dialog_data["c5s4"] + manager.current_context().dialog_data["c5s5"])/16*100,
+                         c6=(manager.current_context().dialog_data["c6s1"] + manager.current_context().dialog_data["c6s2"] + manager.current_context().dialog_data["c6s3"] + manager.current_context().dialog_data["c6s4"])/16*100,
+                         c7=(manager.current_context().dialog_data["c7s2"] + manager.current_context().dialog_data["c7s3"] + manager.current_context().dialog_data["c7s4"] + manager.current_context().dialog_data["c7s5"])/16*100,
+                         c8=(manager.current_context().dialog_data["c8s1"] + manager.current_context().dialog_data["c8s2"] + manager.current_context().dialog_data["c8s3"] + manager.current_context().dialog_data["c8s4"])/16*100)
+
     await manager.done()
 
 

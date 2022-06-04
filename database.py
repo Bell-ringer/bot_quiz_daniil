@@ -1,4 +1,6 @@
 import asyncio
+import pandas as pd
+
 from tortoise import Tortoise, fields
 from tortoise.models import Model
 
@@ -14,6 +16,34 @@ class Situations(Model):
 
     class Meta:
         table = "situations"
+
+
+class Results(Model):
+    user_id = fields.BigIntField(pk=True)
+    name = fields.TextField()
+    try_num = fields.TextField()
+    start_time = fields.DatetimeField()
+    end_time = fields.DatetimeField()
+    c1 = fields.FloatField()
+    c2 = fields.FloatField()
+    c3 = fields.FloatField()
+    c4 = fields.FloatField()
+    c5 = fields.FloatField()
+    c6 = fields.FloatField()
+    c7 = fields.FloatField()
+    c8 = fields.FloatField()
+
+    class Meta:
+        unique_together = ("user_id", "try_num")
+        table = "results"
+
+
+async def admin_load():
+    conn = Tortoise.get_connection("default")
+    await conn.execute_query("\copy results TO 'results.csv' CSV DELIMITER ',';")
+
+    read_file = pd.read_csv(r'results.csv')
+    read_file.to_excel(r'results.xlsx', index=None, header=True)
 
 
 # Инициализация базы данных
