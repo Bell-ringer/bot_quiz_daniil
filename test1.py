@@ -23,7 +23,6 @@ next_state: State
 
 
 class test1SG(StatesGroup):
-    answer = State()
     introduction = State()
     c1s1 = State()
     c1s2 = State()
@@ -58,6 +57,7 @@ class test1SG(StatesGroup):
     c8s2 = State()
     c3s4 = State()
     c8s4 = State()
+    answer = State()
 
 
 # функция для получения данных из состояний
@@ -493,38 +493,14 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
                                  f'Время начала теста:\n{manager.current_context().dialog_data["start_time"]}\n'
                                  f'Время окончания теста:\n{manager.current_context().dialog_data["end_time"]}\n'
                                  'Твои результаты:\n'
-                                 f'№1 : {manager.current_context().dialog_data["c1s1"]}\n'
-                                 f'№2 : {manager.current_context().dialog_data["c1s2"]}\n'
-                                 f'№3 : {manager.current_context().dialog_data["c5s4"]}\n'
-                                 f'№4 : {manager.current_context().dialog_data["c5s2"]}\n'
-                                 f'№5 : {manager.current_context().dialog_data["c5s1"]}\n'
-                                 f'№6 : {manager.current_context().dialog_data["c4s4"]}\n'
-                                 f'№7 : {manager.current_context().dialog_data["c6s2"]}\n'
-                                 f'№8 : {manager.current_context().dialog_data["c7s2"]}\n'
-                                 f'№9 : {manager.current_context().dialog_data["c7s3"]}\n'
-                                 f'№10 : {manager.current_context().dialog_data["c1s5"]}\n'
-                                 f'№11 : {manager.current_context().dialog_data["c1s3"]}\n'
-                                 f'№12 : {manager.current_context().dialog_data["c3s1"]}\n'
-                                 f'№13 : {manager.current_context().dialog_data["c3s2"]}\n'
-                                 f'№14 : {manager.current_context().dialog_data["c3s3"]}\n'
-                                 f'№15 : {manager.current_context().dialog_data["c2s1"]}\n'
-                                 f'№16 : {manager.current_context().dialog_data["c4s3"]}\n'
-                                 f'№17 : {manager.current_context().dialog_data["c4s2"]}\n'
-                                 f'№18 : {manager.current_context().dialog_data["c2s2"]}\n'
-                                 f'№19 : {manager.current_context().dialog_data["c6s3"]}\n'
-                                 f'№20 : {manager.current_context().dialog_data["c4s1"]}\n'
-                                 f'№21 : {manager.current_context().dialog_data["c6s1"]}\n'
-                                 f'№22 : {manager.current_context().dialog_data["c2s4"]}\n'
-                                 f'№23 : {manager.current_context().dialog_data["c2s3"]}\n'
-                                 f'№24 : {manager.current_context().dialog_data["c6s4"]}\n'
-                                 f'№25 : {manager.current_context().dialog_data["c7s4"]}\n'
-                                 f'№26 : {manager.current_context().dialog_data["c7s5"]}\n'
-                                 f'№27:  {manager.current_context().dialog_data["c5s5"]}\n'
-                                 f'№28 : {manager.current_context().dialog_data["c8s3"]}\n'
-                                 f'№29 : {manager.current_context().dialog_data["c8s1"]}\n'
-                                 f'№30 : {manager.current_context().dialog_data["c8s2"]}\n'
-                                 f'№31 : {manager.current_context().dialog_data["c3s4"]}\n'
-                                 f'№32 : {manager.current_context().dialog_data["c8s4"]}\n'
+                                 f'Компетенция №1: {manager.current_context().dialog_data["c1s1"] + manager.current_context().dialog_data["c1s2"] + manager.current_context().dialog_data["c1s3"] + manager.current_context().dialog_data["c1s5"]}'
+                                 f'Компетенция №2: {manager.current_context().dialog_data["c2s1"] + manager.current_context().dialog_data["c2s2"] + manager.current_context().dialog_data["c2s3"] + manager.current_context().dialog_data["c2s4"]}'
+                                 f'Компетенция №3: {manager.current_context().dialog_data["c3s1"] + manager.current_context().dialog_data["c3s2"] + manager.current_context().dialog_data["c3s3"] + manager.current_context().dialog_data["c3s4"]}'
+                                 f'Компетенция №4: {manager.current_context().dialog_data["c4s1"] + manager.current_context().dialog_data["c4s2"] + manager.current_context().dialog_data["c4s3"] + manager.current_context().dialog_data["c4s4"]}'
+                                 f'Компетенция №5: {manager.current_context().dialog_data["c5s1"] + manager.current_context().dialog_data["c5s2"] + manager.current_context().dialog_data["c5s4"] + manager.current_context().dialog_data["c5s5"]}'
+                                 f'Компетенция №6: {manager.current_context().dialog_data["c6s1"] + manager.current_context().dialog_data["c6s2"] + manager.current_context().dialog_data["c6s3"] + manager.current_context().dialog_data["c6s4"]}'
+                                 f'Компетенция №7: {manager.current_context().dialog_data["c7s2"] + manager.current_context().dialog_data["c7s3"] + manager.current_context().dialog_data["c7s4"] + manager.current_context().dialog_data["c7s5"]}'
+                                 f'Компетенция №8: {manager.current_context().dialog_data["c8s1"] + manager.current_context().dialog_data["c8s2"] + manager.current_context().dialog_data["c8s3"] + manager.current_context().dialog_data["c8s4"]}'
                                  )
     await manager.done()
 
@@ -829,7 +805,7 @@ test1 = Dialog(
     ),
     Window(
         Jinja("Диагностика\n"
-               "<b> Как организуешь проведение пульсометрии?</b>\n"
+              "<b> Как организуешь проведение пульсометрии?</b>\n"
               "<b>"
               "{% for answer in answer_variants %}"
               "{{answer}}\n"
