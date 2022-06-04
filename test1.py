@@ -96,7 +96,7 @@ async def start_test(c: CallbackQuery, button: Button, manager: DialogManager):
     manager.current_context().dialog_data["user_id"] = c.from_user.id
     manager.current_context().dialog_data["name"] = c.from_user.first_name
 
-    manager.current_context().dialog_data["try_num"] = await Results.filter(id=c.from_user.id).count()
+    manager.current_context().dialog_data["try_num"] = await Results.filter(user_id=c.from_user.id).count()
 
     await get_random_answers(manager, 1)
     await manager.dialog().switch_to(test1SG.c1s1)
