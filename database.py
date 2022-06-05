@@ -22,7 +22,7 @@ class Results(Model):
     class Meta:
         unique_together = ("user_id", "try_num")
         table = "results"
-    user_id = fields.BigIntField(pk=True)
+    user_id = fields.BigIntField()
     name = fields.TextField()
     try_num = fields.TextField()
     start_time = fields.TextField()
