@@ -4,16 +4,13 @@ from datetime import datetime
 from aiogram.types import CallbackQuery, ParseMode
 
 from aiogram_dialog import ChatEvent
-from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Button, Select, Back, Column, Cancel, Url, SwitchTo, Row
+from aiogram_dialog.widgets.kbd import Button, Select, Cancel, Row
 from aiogram_dialog.widgets.text import Format, Jinja
 
 from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram.types import Message
 
 from aiogram_dialog import Dialog, DialogManager, Window, StartMode
 from aiogram_dialog.manager.protocols import LaunchMode
-from aiogram_dialog.widgets.kbd import Start
 from aiogram_dialog.widgets.text import Const
 
 from database import Situations, Results
@@ -96,7 +93,7 @@ async def start_test(c: CallbackQuery, button: Button, manager: DialogManager):
     manager.current_context().dialog_data["user_id"] = c.from_user.id
     manager.current_context().dialog_data["name"] = c.from_user.first_name
 
-    manager.current_context().dialog_data["try_num"] = await Results.filter(user_id=c.from_user.id).count()
+    manager.current_context().dialog_data["try_num"] = await Results.filter(user_id=c.from_user.id).count() + 1
 
     await get_random_answers(manager, 1)
     await manager.dialog().switch_to(test1SG.c1s1)

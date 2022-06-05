@@ -2,6 +2,7 @@ import asyncio
 import pandas as pd
 import psycopg2
 
+from datetime import datetime
 from tortoise import Tortoise, fields
 from tortoise.models import Model
 
@@ -46,7 +47,7 @@ async def admin_load():
     cur.close()
 
     read_file = pd.read_csv('results.csv')
-    read_file.to_excel('results.xlsx', encoding='utf8', index=None, header=True)
+    read_file.to_excel(f'test_handball_{datetime.now().strftime("%d-%m-%y %H:%M:%S")}.xlsx', encoding='utf8', index=None, header=True)
 
 
 # Инициализация базы данных
