@@ -13,9 +13,9 @@ from database import admin_load
 
 
 async def load_handler(m: Message, dialog_manager: DialogManager):
-    await admin_load()
+    file = await admin_load()
 
-    await MyBot.bot.send_document(ADMIN_ID, open("results.xlsx", 'rb'))
+    await MyBot.bot.send_document(ADMIN_ID, open(file, 'rb'))
 
 
 async def start(m: Message, dialog_manager: DialogManager):
