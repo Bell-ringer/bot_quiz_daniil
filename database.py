@@ -19,9 +19,12 @@ class Situations(Model):
 
 
 class Results(Model):
+    class Meta:
+        unique_together = ("user_id", "try_num")
+        table = "results"
     user_id = fields.BigIntField(pk=True)
     name = fields.TextField()
-    try_num = fields.TextField(pk=True)
+    try_num = fields.TextField()
     start_time = fields.TextField()
     end_time = fields.TextField()
     c1 = fields.FloatField()
@@ -32,10 +35,6 @@ class Results(Model):
     c6 = fields.FloatField()
     c7 = fields.FloatField()
     c8 = fields.FloatField()
-
-    class Meta:
-        unique_together = ("user_id", "try_num")
-        table = "results"
 
 
 async def admin_load():
