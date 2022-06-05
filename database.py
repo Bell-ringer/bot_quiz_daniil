@@ -21,7 +21,7 @@ class Situations(Model):
 class Results(Model):
     user_id = fields.BigIntField(pk=True)
     name = fields.TextField()
-    try_num = fields.TextField()
+    try_num = fields.TextField(pk=True)
     start_time = fields.TextField()
     end_time = fields.TextField()
     c1 = fields.FloatField()
