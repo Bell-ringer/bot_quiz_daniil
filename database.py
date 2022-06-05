@@ -1,11 +1,11 @@
 import asyncio
 import pandas as pd
+import psycopg2
 
 from tortoise import Tortoise, fields
 from tortoise.models import Model
 
 # Классы ORM
-
 
 class Situations(Model):
     id = fields.BigIntField(pk=True)
@@ -39,8 +39,11 @@ class Results(Model):
 
 
 async def admin_load():
-    conn = Tortoise.get_connection("default")
-    await conn.execute_query("COPY results TO 'results.csv' CSV DELIMITER ',';")
+    conn = psycopg2.connect("postgres://blaehfiylzuywc:771798453e6550bb74ffe3f3d386b9de2ac0183c66d2b3d729ac4fb93591bbaa@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/d2c4gv7boohhj7", sslmode='require')
+    cur = conn.cursor()
+    copy = "\copy results TO 'results.csv' CSV DELIMITER ',';"
+    with open("results.csv", "w") as file:
+        cur.copy_expert(copy, file)
 
     read_file = pd.read_csv(r'results.csv')
     read_file.to_excel(r'results.xlsx', index=None, header=True)
