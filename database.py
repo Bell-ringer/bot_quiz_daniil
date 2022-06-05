@@ -41,13 +41,13 @@ class Results(Model):
 async def admin_load():
     conn = psycopg2.connect("postgres://blaehfiylzuywc:771798453e6550bb74ffe3f3d386b9de2ac0183c66d2b3d729ac4fb93591bbaa@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/d2c4gv7boohhj7", sslmode='require')
     cur = conn.cursor()
-    copy = "COPY results TO STDOUT WITH CSV DELIMITER ';'"
+    copy = "COPY results TO STDOUT WITH CSV DELIMITER ';' HEADER"
     with open("results.csv", "w") as file:
         cur.copy_expert(copy, file)
     cur.close()
 
-    read_file = pd.read_csv(r'results.csv')
-    read_file.to_excel(r'results.xlsx', index=None, header=True)
+    read_file = pd.read_csv('results.csv')
+    read_file.to_excel('results.xlsx', encoding='utf8', index=None, header=True)
 
 
 # Инициализация базы данных
