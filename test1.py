@@ -76,12 +76,7 @@ async def get_data(dialog_manager: DialogManager, **kwargs):
 
 
 async def next_question(c: CallbackQuery, button: Button, manager: DialogManager):
-    if manager.current_context().dialog_data["last"]:
-        next_state[c.from_user.id] = test1SG.c1s1
-        os.remove("results_" + str(c.from_user.id) + ".png")
-        await manager.done()
-    else:
-        await manager.dialog().switch_to(next_state[c.from_user.id])
+    await manager.dialog().switch_to(next_state[c.from_user.id])
 
 
 async def get_random_answers(manager: DialogManager, situation: int):
@@ -527,9 +522,7 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
     await graph(c1=c1, c2=c2, c3=c3, c4=c4, c5=c5, c6=c6, c7=c7, c8=c8, user_id=c.from_user.id)
 
-    manager.current_context().dialog_data["filename"] = "results_" + str(c.from_user.id) + ".png"
-
-    manager.current_context().dialog_data["answer_buffer"] = f'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\nЖелаю тебе достичь всех амбициозных целей! Удачи тебе!\nВремя начала теста:\n{manager.current_context().dialog_data["start_time"]}\nВремя окончания теста:\n{manager.current_context().dialog_data["end_time"]}\nТвои результаты:\nКомпетенция №1: {c1}%\nКомпетенция №2: {c2}%\nКомпетенция №3: {c3}%\nКомпетенция №4: {c4}%\nКомпетенция №5: {c5}%\nКомпетенция №6: {c6}%\nКомпетенция №7: {c7}%\nКомпетенция №8: {c8}%\n'
+    caption = f'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\nЖелаю тебе достичь всех амбициозных целей! Удачи тебе!\nВремя начала теста:\n{manager.current_context().dialog_data["start_time"]}\nВремя окончания теста:\n{manager.current_context().dialog_data["end_time"]}\nТвои результаты:\nКомпетенция №1: {c1}%\nКомпетенция №2: {c2}%\nКомпетенция №3: {c3}%\nКомпетенция №4: {c4}%\nКомпетенция №5: {c5}%\nКомпетенция №6: {c6}%\nКомпетенция №7: {c7}%\nКомпетенция №8: {c8}%\n'
 
     await Results.create(user_id=manager.current_context().dialog_data["user_id"],
                          try_num=manager.current_context().dialog_data["try_num"],
@@ -545,11 +538,11 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
                          c7=c7,
                          c8=c8)
 
-    manager.current_context().dialog_data["next_button_text"] = "Завершить тест!"
+    await MyBot.bot.send_photo(c.from_user.id, open("results_" + str(c.from_user.id) + ".png", "rb"), caption=caption)
 
-    await manager.dialog().switch_to(test1SG.answer)
+    os.remove("results_" + str(c.from_user.id) + ".png")
 
-    # await manager.done()
+    await manager.dialog().switch_to(test1SG.introduction)
 
 
 test1 = Dialog(
