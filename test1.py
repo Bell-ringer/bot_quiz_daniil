@@ -522,7 +522,7 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
     await graph(c1=c1, c2=c2, c3=c3, c4=c4, c5=c5, c6=c6, c7=c7, c8=c8, user_id=c.from_user.id)
 
-    caption = f'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\nЖелаю тебе достичь всех амбициозных целей! Удачи тебе!\nВремя начала теста:\n{manager.current_context().dialog_data["start_time"]}\nВремя окончания теста:\n{manager.current_context().dialog_data["end_time"]}\nТвои результаты:\nСпособность использовать современные методы и технологии обучения: {c1}%\n\nСпособность решать задачи воспитания: {c2}%\n\nДиагностика: {c3}%\n\nСпособность осуществлять обучение с учётом социальных, возрастных, психофизических и индивидуальных особенностей: {c4}%\n\nЦифровая грамотность: {c5}%\n\nГотовность к охране и безопасности: {c6}%\n\nКоммуникация: {c7}%\n\nГотовность к профессиональной деятельности в соответствии нормативно-правовыми актами сферы образования: {c8}%\n'
+    caption = f'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\nЖелаю тебе достичь всех амбициозных целей! Удачи тебе!\n\nВремя начала теста:\n{manager.current_context().dialog_data["start_time"]}\nВремя окончания теста:\n{manager.current_context().dialog_data["end_time"]}\n\nТвои результаты:\n\nСпособность использовать современные методы и технологии обучения: <b>{c1}</b>%\n\nСпособность решать задачи воспитания: <b>{c2}</b>%\n\nДиагностика: <b>{c3}</b>%\n\nСпособность осуществлять обучение с учётом социальных, возрастных, психофизических и индивидуальных особенностей: <b>{c4}</b>%\n\nЦифровая грамотность: <b>{c5}</b>%\n\nГотовность к охране и безопасности: <b>{c6}</b>%\n\nКоммуникация: <b>{c7}</b>%\n\nГотовность к профессиональной деятельности в соответствии нормативно-правовыми актами сферы образования: <b>{c8}</b>%\n'
 
     await Results.create(user_id=manager.current_context().dialog_data["user_id"],
                          try_num=manager.current_context().dialog_data["try_num"],
@@ -538,7 +538,7 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
                          c7=c7,
                          c8=c8)
 
-    await MyBot.bot.send_photo(c.from_user.id, open("results_" + str(c.from_user.id) + ".png", "rb"), caption=caption)
+    await MyBot.bot.send_photo(c.from_user.id, open("results_" + str(c.from_user.id) + ".png", "rb"), caption=caption, parse_mode="HTML")
 
     os.remove("results_" + str(c.from_user.id) + ".png")
 
