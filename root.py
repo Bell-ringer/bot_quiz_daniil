@@ -23,8 +23,8 @@ async def start(m: Message, dialog_manager: DialogManager):
         markup = ReplyKeyboardMarkup(resize_keyboard=True)
         item = KeyboardButton('Выгрузить результаты .xls 📊')
         markup.add(item)
-        await MyBot.bot.send_message(m.from_user.id, f'Привет, <b>{m.from_user.first_name}</b>\n'
-                                                     f'Это бот с тестами для преподавателей', parse_mode="HTML",
+        await MyBot.bot.send_message(m.from_user.id, f'Здравствуй, <b>{m.from_user.first_name}!</b>\n'
+                                                     f'Я - бот «ПроДвижение». Моя миссия, помочь тебе в обучении. Решая задачи, выбери оптимальный вариант ответа и нажми его номер  внизу. Удачи!', parse_mode="HTML",
                                      reply_markup=markup)
         await dialog_manager.start(test1SG.introduction, mode=StartMode.RESET_STACK)
     else:

@@ -522,7 +522,6 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
     await graph(c1=c1, c2=c2, c3=c3, c4=c4, c5=c5, c6=c6, c7=c7, c8=c8, user_id=c.from_user.id)
 
-
     caption = f'Поздравляю!\n' \
               f'На этом внеурочное занятие завершено. Спасибо за твои решения!\n' \
               f'Желаю тебе достичь всех амбициозных целей! Удачи тебе!\n\n' \
@@ -552,7 +551,8 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
                          c7=c7,
                          c8=c8)
 
-    await MyBot.bot.send_photo(c.from_user.id, open("results_" + str(c.from_user.id) + ".png", "rb"), caption=caption, parse_mode="HTML")
+    await MyBot.bot.send_photo(c.from_user.id, open("results_" + str(c.from_user.id) + ".png", "rb"), caption=caption,
+                               parse_mode="HTML")
 
     os.remove("results_" + str(c.from_user.id) + ".png")
 
