@@ -522,7 +522,21 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
 
     await graph(c1=c1, c2=c2, c3=c3, c4=c4, c5=c5, c6=c6, c7=c7, c8=c8, user_id=c.from_user.id)
 
-    caption = f'Поздравляю!\nНа этом внеурочное занятие завершено. Спасибо за твои решения!\nЖелаю тебе достичь всех амбициозных целей! Удачи тебе!\n\nВремя начала теста:\n{manager.current_context().dialog_data["start_time"]}\nВремя окончания теста:\n{manager.current_context().dialog_data["end_time"]}\n\nТвои результаты:\n\nСпособность использовать современные методы и технологии обучения: <b>{c1}</b>%\n\nСпособность решать задачи воспитания: <b>{c2}</b>%\n\nДиагностика: <b>{c3}</b>%\n\nСпособность осуществлять обучение с учётом социальных, возрастных, психофизических и индивидуальных особенностей: <b>{c4}</b>%\n\nЦифровая грамотность: <b>{c5}</b>%\n\nГотовность к охране и безопасности: <b>{c6}</b>%\n\nКоммуникация: <b>{c7}</b>%\n\nГотовность к профессиональной деятельности в соответствии нормативно-правовыми актами сферы образования: <b>{c8}</b>%\n'
+
+    caption = f'Поздравляю!\n' \
+              f'На этом внеурочное занятие завершено. Спасибо за твои решения!\n' \
+              f'Желаю тебе достичь всех амбициозных целей! Удачи тебе!\n\n' \
+              f'Время начала теста:\n{manager.current_context().dialog_data["start_time"]}\n' \
+              f'Время окончания теста:\n{manager.current_context().dialog_data["end_time"]}\n\n' \
+              f'Твои результаты:\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#modern-technologies">Современные методы и технологии обучения:</a> <b>{c1}</b>%\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#upbringing>Решение задач воспитания:</a> <b>{c2}</b>%\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#diagnostic>Диагностика:</a> <b>{c3}</b>%\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#personality-orientired>Реализация личностно-ориентированных технологий:</a> <b>{c4}</b>%\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#digital-ready>Цифровая грамотность:</a> <b>{c5}</b>%\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#security>Готовность к охране и безопасности:</a> <b>{c6}</b>%\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#communication>Коммуникация:</a> <b>{c7}</b>%\n\n' \
+              f'<a href=https://pedagog-mastery.ru/#law>Правовые основы образования:</a> <b>{c8}</b>%\n'
 
     await Results.create(user_id=manager.current_context().dialog_data["user_id"],
                          try_num=manager.current_context().dialog_data["try_num"],
