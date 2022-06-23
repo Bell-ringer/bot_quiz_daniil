@@ -44,6 +44,7 @@ class mainSG(StatesGroup):
 
 main_menu = Dialog(
     Window(
+        Const("Выбери тест, который желаешт пройти!"),
         Start(Const("Внеурочное занятие"), id="po", state=test1SG.introduction),
         # Start(Const("Тест 2"), id="po", state=test2SG.post),
         # Start(Const("Тест 3"), id="po", state=test3SG.post),
