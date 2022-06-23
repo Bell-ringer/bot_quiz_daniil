@@ -504,21 +504,21 @@ async def c8s4_handler(c: ChatEvent, select: Select, manager: DialogManager, ite
     manager.current_context().dialog_data["end_time"] = datetime.now().strftime("%d-%m-%y %H:%M:%S")
 
     c1 = ((manager.current_context().dialog_data["c1s1"] + manager.current_context().dialog_data["c1s2"] +
-           manager.current_context().dialog_data["c1s3"] + manager.current_context().dialog_data["c1s5"]) / 16 * 100)
+           manager.current_context().dialog_data["c1s3"] + manager.current_context().dialog_data["c1s5"]) / 12 * 100)
     c2 = ((manager.current_context().dialog_data["c2s1"] + manager.current_context().dialog_data["c2s2"] +
-           manager.current_context().dialog_data["c2s3"] + manager.current_context().dialog_data["c2s4"]) / 16 * 100)
+           manager.current_context().dialog_data["c2s3"] + manager.current_context().dialog_data["c2s4"]) / 12 * 100)
     c3 = ((manager.current_context().dialog_data["c3s1"] + manager.current_context().dialog_data["c3s2"] +
-           manager.current_context().dialog_data["c3s3"] + manager.current_context().dialog_data["c3s4"]) / 16 * 100)
+           manager.current_context().dialog_data["c3s3"] + manager.current_context().dialog_data["c3s4"]) / 12 * 100)
     c4 = ((manager.current_context().dialog_data["c4s1"] + manager.current_context().dialog_data["c4s2"] +
-           manager.current_context().dialog_data["c4s3"] + manager.current_context().dialog_data["c4s4"]) / 16 * 100)
+           manager.current_context().dialog_data["c4s3"] + manager.current_context().dialog_data["c4s4"]) / 12 * 100)
     c5 = ((manager.current_context().dialog_data["c5s1"] + manager.current_context().dialog_data["c5s2"] +
-           manager.current_context().dialog_data["c5s4"] + manager.current_context().dialog_data["c5s5"]) / 16 * 100)
+           manager.current_context().dialog_data["c5s4"] + manager.current_context().dialog_data["c5s5"]) / 12 * 100)
     c6 = ((manager.current_context().dialog_data["c6s1"] + manager.current_context().dialog_data["c6s2"] +
-           manager.current_context().dialog_data["c6s3"] + manager.current_context().dialog_data["c6s4"]) / 16 * 100)
+           manager.current_context().dialog_data["c6s3"] + manager.current_context().dialog_data["c6s4"]) / 12 * 100)
     c7 = ((manager.current_context().dialog_data["c7s2"] + manager.current_context().dialog_data["c7s3"] +
-           manager.current_context().dialog_data["c7s4"] + manager.current_context().dialog_data["c7s5"]) / 16 * 100)
+           manager.current_context().dialog_data["c7s4"] + manager.current_context().dialog_data["c7s5"]) / 12 * 100)
     c8 = ((manager.current_context().dialog_data["c8s1"] + manager.current_context().dialog_data["c8s2"] +
-           manager.current_context().dialog_data["c8s3"] + manager.current_context().dialog_data["c8s4"]) / 16 * 100)
+           manager.current_context().dialog_data["c8s3"] + manager.current_context().dialog_data["c8s4"]) / 12 * 100)
 
     await graph(c1=c1, c2=c2, c3=c3, c4=c4, c5=c5, c6=c6, c7=c7, c8=c8, user_id=c.from_user.id)
 
