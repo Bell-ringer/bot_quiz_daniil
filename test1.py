@@ -575,6 +575,7 @@ test1 = Dialog(
                "этап начальной подготовки. В календарном планировании это занятие No3.\n"
                "<b>Тема «Ведение и бросок мяча»</b>. По списку в группе 20 человек."),
         Button(Const("Начать тест!"), id="start_test", on_click=start_test),
+        Cancel(Const("⏪ Назад")),
         parse_mode=ParseMode.HTML,
         state=test1SG.introduction
     ),

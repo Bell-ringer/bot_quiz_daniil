@@ -6,7 +6,9 @@ from datetime import datetime
 from tortoise import Tortoise, fields
 from tortoise.models import Model
 
+
 # Классы ORM
+
 
 class Situations(Model):
     id = fields.BigIntField(pk=True)
@@ -19,15 +21,30 @@ class Situations(Model):
         table = "situations"
 
 
+class Situations2(Model):
+    id = fields.BigIntField(pk=True)
+    situation = fields.TextField()
+    comp = fields.TextField()
+    question = fields.TextField()
+    next_situation = fields.TextField()
+    text = fields.TextField()
+    score = fields.IntField()
+
+    class Meta:
+        table = "situations2"
+
+
 class Results(Model):
     class Meta:
         unique_together = ("user_id", "try_num")
         table = "results"
+
     user_id = fields.BigIntField()
     name = fields.TextField()
     try_num = fields.TextField()
     start_time = fields.TextField()
     end_time = fields.TextField()
+    test_name = fields.TextField
     c1 = fields.FloatField()
     c2 = fields.FloatField()
     c3 = fields.FloatField()
@@ -39,7 +56,9 @@ class Results(Model):
 
 
 async def admin_load():
-    conn = psycopg2.connect("postgres://blaehfiylzuywc:771798453e6550bb74ffe3f3d386b9de2ac0183c66d2b3d729ac4fb93591bbaa@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/d2c4gv7boohhj7", sslmode='require')
+    conn = psycopg2.connect(
+        "postgres://blaehfiylzuywc:771798453e6550bb74ffe3f3d386b9de2ac0183c66d2b3d729ac4fb93591bbaa@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/d2c4gv7boohhj7",
+        sslmode='require')
     cur = conn.cursor()
     copy = "COPY results TO STDOUT WITH CSV DELIMITER ',' HEADER"
     with open("results.csv", "w") as file:
@@ -51,6 +70,7 @@ async def admin_load():
     read_file.to_excel(excel_file, encoding='utf8', index=None, header=True)
 
     return excel_file
+
 
 # Инициализация базы данных
 async def run():

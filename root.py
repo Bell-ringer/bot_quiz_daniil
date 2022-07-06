@@ -6,10 +6,13 @@ from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.kbd import Start
 from aiogram_dialog.widgets.text import Const
 
-from bot import MyBot
+from test2 import test2SG
 from test1 import test1SG
+
+from bot import MyBot
 from config import ADMIN_ID
 from database import admin_load
+
 
 
 async def load_handler(m: Message, dialog_manager: DialogManager):
@@ -45,8 +48,8 @@ class mainSG(StatesGroup):
 main_menu = Dialog(
     Window(
         Const("Выбери тест, который желаешь пройти!"),
-        Start(Const("Внеурочное занятие"), id="po", state=test1SG.introduction),
-        # Start(Const("Тест 2"), id="po", state=test2SG.post),
+        Start(Const("Внеурочное занятие"), id="test1", state=test1SG.introduction),
+        Start(Const("Урок"), id="test2", state=test2SG.introduction),
         # Start(Const("Тест 3"), id="po", state=test3SG.post),
         state=mainSG.choose_test
     ),
